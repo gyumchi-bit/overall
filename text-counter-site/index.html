@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>텍스트 카운터 - 글자수, 단어수 세기</title>
+    <meta name="description" content="한글, 영어 텍스트의 글자수, 단어수, 문장수, 문단수를 실시간으로 세어주는 무료 도구입니다.">
+    <meta name="keywords" content="글자수 세기, 단어수 세기, 문자 카운터, 텍스트 분석">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/responsive.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-calculator"></i>
+                    텍스트 카운터
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <div class="nav-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        홈
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <i class="fas fa-tools"></i>
+                        텍스트 도구
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="character-counter.html">글자수 세기</a></li>
+                        <li><a href="word-counter.html">단어수 세기</a></li>
+                        <li><a href="sentence-counter.html">문장수 세기</a></li>
+                        <li><a href="paragraph-counter.html">문단수 세기</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <i class="fas fa-language"></i>
+                        언어별 도구
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="korean-counter.html">한글 분석기</a></li>
+                        <li><a href="english-counter.html">영어 분석기</a></li>
+                        <li><a href="mixed-counter.html">혼합 텍스트 분석</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <i class="fas fa-chart-bar"></i>
+                        고급 분석
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="reading-time.html">읽기 시간 계산</a></li>
+                        <li><a href="keyword-density.html">키워드 밀도</a></li>
+                        <li><a href="text-statistics.html">텍스트 통계</a></li>
+                        <li><a href="seo-analyzer.html">SEO 분석</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">
+                        <i class="fas fa-info-circle"></i>
+                        소개
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <i class="fas fa-calculator"></i>
+                        텍스트 카운터
+                    </h1>
+                    <p class="hero-subtitle">
+                        글자수, 단어수, 문장수를 실시간으로 세어주는 무료 도구
+                    </p>
+                    <p class="hero-description">
+                        한글과 영어를 모두 지원하며, SEO 글쓰기와 문서 작성에 유용합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Text Counter Section -->
+        <section class="counter-section">
+            <div class="container">
+                <div class="counter-wrapper">
+                    <!-- Text Input Area -->
+                    <div class="input-section">
+                        <div class="input-header">
+                            <h2>텍스트 입력</h2>
+                            <div class="input-controls">
+                                <button class="btn-clear" onclick="clearText()">
+                                    <i class="fas fa-trash"></i>
+                                    지우기
+                                </button>
+                                <button class="btn-sample" onclick="loadSample()">
+                                    <i class="fas fa-file-text"></i>
+                                    샘플 텍스트
+                                </button>
+                            </div>
+                        </div>
+                        <textarea 
+                            id="textInput" 
+                            class="text-input" 
+                            placeholder="여기에 텍스트를 입력하거나 붙여넣기 하세요..."
+                            oninput="updateCounters()"
+                        ></textarea>
+                    </div>
+
+                    <!-- Statistics Panel -->
+                    <div class="stats-section">
+                        <h2>통계 정보</h2>
+                        <div class="stats-grid">
+                            <!-- Basic Stats -->
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-font"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="characterCount">0</div>
+                                    <div class="stat-label">전체 문자수</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-text-width"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="characterNoSpaceCount">0</div>
+                                    <div class="stat-label">공백 제외 문자수</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-spell-check"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="wordCount">0</div>
+                                    <div class="stat-label">단어수</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-list-ol"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="sentenceCount">0</div>
+                                    <div class="stat-label">문장수</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-paragraph"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="paragraphCount">0</div>
+                                    <div class="stat-label">문단수</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="readingTime">0분</div>
+                                    <div class="stat-label">읽기 시간</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Stats -->
+                        <div class="detailed-stats">
+                            <h3>상세 분석</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">한글 문자:</span>
+                                    <span class="detail-value" id="koreanCount">0</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">영어 문자:</span>
+                                    <span class="detail-value" id="englishCount">0</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">숫자:</span>
+                                    <span class="detail-value" id="numberCount">0</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">특수문자:</span>
+                                    <span class="detail-value" id="specialCount">0</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">공백:</span>
+                                    <span class="detail-value" id="spaceCount">0</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">줄바꿈:</span>
+                                    <span class="detail-value" id="lineBreakCount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">주요 기능</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3>실시간 카운팅</h3>
+                        <p>타이핑과 동시에 즉시 결과를 확인할 수 있습니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3>다국어 지원</h3>
+                        <p>한글, 영어, 숫자, 특수문자를 정확하게 구분하여 분석합니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>반응형 디자인</h3>
+                        <p>PC, 태블릿, 모바일 모든 기기에서 최적화된 환경을 제공합니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>상세 분석</h3>
+                        <p>읽기 시간, 키워드 밀도 등 심화된 텍스트 분석을 제공합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Guide -->
+        <section class="usage-guide">
+            <div class="container">
+                <h2 class="section-title">사용 방법</h2>
+                <div class="guide-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>텍스트 입력</h3>
+                            <p>상단의 텍스트 입력창에 분석할 텍스트를 입력하거나 붙여넣기 하세요.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>실시간 확인</h3>
+                            <p>입력과 동시에 우측에서 글자수, 단어수 등의 통계를 실시간으로 확인할 수 있습니다.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>상세 분석</h3>
+                            <p>상세 분석 섹션에서 언어별 문자 구성과 추가 정보를 확인하세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>텍스트 카운터</h3>
+                    <p>무료로 제공되는 텍스트 분석 도구입니다.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>빠른 링크</h4>
+                    <ul>
+                        <li><a href="character-counter.html">글자수 세기</a></li>
+                        <li><a href="word-counter.html">단어수 세기</a></li>
+                        <li><a href="reading-time.html">읽기 시간</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>고급 도구</h4>
+                    <ul>
+                        <li><a href="keyword-density.html">키워드 밀도</a></li>
+                        <li><a href="seo-analyzer.html">SEO 분석</a></li>
+                        <li><a href="text-statistics.html">텍스트 통계</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 텍스트 카운터. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/counter.js"></script>
+</body>
+</html>

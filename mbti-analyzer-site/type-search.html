@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 성격유형 검색기 - 빠른 유형 찾기</title>
+    <meta name="description" content="MBTI 16가지 성격유형을 빠르게 검색하고 비교하세요. 특성, 직업, 궁합 정보를 한눈에 확인할 수 있습니다.">
+    <meta name="keywords" content="MBTI 검색, 성격유형 찾기, MBTI 비교, 성격 검색기">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="assets/css/bootstrap-integrated.css">
+    
+    <style>
+        .search-container {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        .search-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--bs-border-radius-xl);
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-input {
+            border: 2px solid var(--bs-gray-300);
+            border-radius: var(--bs-border-radius-lg);
+            font-size: 1.25rem;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .type-result-card {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .type-result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .type-result-card.nt {
+            border-left-color: var(--nt-color);
+        }
+        
+        .type-result-card.nf {
+            border-left-color: var(--nf-color);
+        }
+        
+        .type-result-card.sj {
+            border-left-color: var(--sj-color);
+        }
+        
+        .type-result-card.sp {
+            border-left-color: var(--sp-color);
+        }
+        
+        .type-code {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .type-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--bs-gray-700);
+            margin-bottom: 0.75rem;
+        }
+        
+        .type-description {
+            color: var(--bs-gray-600);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .type-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .type-tag {
+            background: var(--bs-gray-100);
+            color: var(--bs-gray-700);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .type-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .type-stat {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bs-gray-50);
+            border-radius: var(--bs-border-radius);
+        }
+        
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--bs-primary);
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--bs-gray-600);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--bs-gray-300);
+            border-radius: 50px;
+            background: white;
+            color: var(--bs-gray-700);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--bs-primary);
+            color: var(--bs-primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--bs-gray-500);
+        }
+        
+        .recommended-types {
+            background: var(--bs-light);
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .quick-action-card {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .quick-action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .quick-action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-tools {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .tool-link {
+            display: block;
+            padding: 0.75rem 0;
+            color: var(--bs-gray-700);
+            text-decoration: none;
+            border-bottom: 1px solid var(--bs-gray-200);
+            transition: color 0.3s ease;
+        }
+        
+        .tool-link:last-child {
+            border-bottom: none;
+        }
+        
+        .tool-link:hover {
+            color: var(--bs-primary);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                padding: 2rem 0;
+            }
+            
+            .search-box {
+                padding: 1.5rem;
+            }
+            
+            .type-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain"></i>
+                <span>MBTI 분석</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">홈</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            테스트
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="testDropdown">
+                            <li><a class="dropdown-item" href="test.html">
+                                <i class="fas fa-play-circle me-2"></i>무료 MBTI 테스트</a></li>
+                            <li><a class="dropdown-item" href="quick-test.html">
+                                <i class="fas fa-bolt me-2"></i>빠른 성격 테스트</a></li>
+                            <li><a class="dropdown-item" href="career-test.html">
+                                <i class="fas fa-briefcase me-2"></i>직업 적성 테스트</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="typesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="typesDropdown">
+                            <li><h6 class="dropdown-header">분석가 (NT)</h6></li>
+                            <li><a class="dropdown-item" href="types/intj.html">INTJ - 건축가</a></li>
+                            <li><a class="dropdown-item" href="types/intp.html">INTP - 논리술사</a></li>
+                            <li><a class="dropdown-item" href="types/entj.html">ENTJ - 통솔자</a></li>
+                            <li><a class="dropdown-item" href="types/entp.html">ENTP - 변론가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">외교관 (NF)</h6></li>
+                            <li><a class="dropdown-item" href="types/infj.html">INFJ - 옹호자</a></li>
+                            <li><a class="dropdown-item" href="types/infp.html">INFP - 중재자</a></li>
+                            <li><a class="dropdown-item" href="types/enfj.html">ENFJ - 선도자</a></li>
+                            <li><a class="dropdown-item" href="types/enfp.html">ENFP - 활동가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="types/istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="types/isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item" href="types/estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="types/esfj.html">ESFJ - 집정관</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">탐험가 (SP)</h6></li>
+                            <li><a class="dropdown-item" href="types/istp.html">ISTP - 장인</a></li>
+                            <li><a class="dropdown-item" href="types/isfp.html">ISFP - 모험가</a></li>
+                            <li><a class="dropdown-item" href="types/estp.html">ESTP - 사업가</a></li>
+                            <li><a class="dropdown-item" href="types/esfp.html">ESFP - 연예인</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="toolsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            분석 도구
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <li><a class="dropdown-item active" href="type-search.html">
+                                <i class="fas fa-search me-2"></i>성격유형 검색기</a></li>
+                            <li><a class="dropdown-item" href="compatibility.html">
+                                <i class="fas fa-heart me-2"></i>궁합 분석</a></li>
+                            <li><a class="dropdown-item" href="career-guide.html">
+                                <i class="fas fa-chart-line me-2"></i>직업 가이드</a></li>
+                            <li><a class="dropdown-item" href="relationship.html">
+                                <i class="fas fa-users me-2"></i>인간관계 분석</a></li>
+                            <li><a class="dropdown-item" href="statistics.html">
+                                <i class="fas fa-chart-bar me-2"></i>통계 및 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">MBTI란?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Header -->
+    <section class="search-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="search-box">
+                        <h1 class="h2 text-center mb-4 text-dark">
+                            <i class="fas fa-search me-2 text-primary"></i>
+                            MBTI 성격유형 검색기
+                        </h1>
+                        <p class="text-center text-muted mb-4">
+                            16가지 MBTI 성격유형을 빠르게 검색하고 비교해보세요.<br>
+                            특성, 직업, 궁합 정보를 한눈에 확인할 수 있습니다.
+                        </p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control search-input" id="searchInput" 
+                                       placeholder="MBTI 유형, 특성, 직업을 검색하세요... (예: INTJ, 건축가, 분석가)">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary w-100 py-3" id="searchBtn">
+                                    <i class="fas fa-search me-2"></i>검색하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- Main Search Results -->
+            <div class="col-lg-8">
+                <!-- Filter Buttons -->
+                <div class="filter-buttons" id="filterButtons">
+                    <button class="filter-btn active" data-filter="all">전체</button>
+                    <button class="filter-btn" data-filter="nt">분석가 (NT)</button>
+                    <button class="filter-btn" data-filter="nf">외교관 (NF)</button>
+                    <button class="filter-btn" data-filter="sj">관리자 (SJ)</button>
+                    <button class="filter-btn" data-filter="sp">탐험가 (SP)</button>
+                </div>
+
+                <!-- Search Results -->
+                <div id="searchResults">
+                    <!-- 결과가 여기에 동적으로 생성됩니다 -->
+                </div>
+
+                <!-- No Results -->
+                <div class="no-results d-none" id="noResults">
+                    <i class="fas fa-search fa-3x mb-3"></i>
+                    <h4>검색 결과가 없습니다</h4>
+                    <p>다른 키워드로 검색해보시거나, 필터를 조정해보세요.</p>
+                </div>
+
+                <!-- Recommended Types -->
+                <div class="recommended-types" id="recommendedTypes">
+                    <h3 class="h4 mb-3">
+                        <i class="fas fa-star text-warning me-2"></i>
+                        인기 성격 유형
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="type-result-card nf">
+                                <div class="type-code text-success">INFP</div>
+                                <div class="type-name">중재자</div>
+                                <div class="type-description">
+                                    항상 선을 행할 준비가 되어 있는 시적이고 친절한 이타주의자
+                                </div>
+                                <a href="types/infp.html" class="btn btn-sm btn-outline-success">자세히 보기</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="type-result-card nt">
+                                <div class="type-code text-primary">INTJ</div>
+                                <div class="type-name">건축가</div>
+                                <div class="type-description">
+                                    독립적이고 전략적인 사고를 가진 완벽주의자
+                                </div>
+                                <a href="types/intj.html" class="btn btn-sm btn-outline-primary">자세히 보기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="test.html" class="quick-action-card">
+                        <div class="quick-action-icon text-primary">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h5>MBTI 테스트</h5>
+                        <p class="text-muted small">정확한 성격 테스트 받기</p>
+                    </a>
+                    
+                    <a href="compatibility.html" class="quick-action-card">
+                        <div class="quick-action-icon text-danger">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h5>궁합 분석</h5>
+                        <p class="text-muted small">다른 유형과의 궁합도 확인</p>
+                    </a>
+                    
+                    <a href="career-guide.html" class="quick-action-card">
+                        <div class="quick-action-icon text-warning">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h5>직업 가이드</h5>
+                        <p class="text-muted small">적합한 직업 찾기</p>
+                    </a>
+                    
+                    <a href="relationship.html" class="quick-action-card">
+                        <div class="quick-action-icon text-info">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5>인간관계 분석</h5>
+                        <p class="text-muted small">소통 방법 알아보기</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Tools -->
+                <div class="sidebar-tools">
+                    <h5 class="mb-3">
+                        <i class="fas fa-tools me-2"></i>
+                        MBTI 도구
+                    </h5>
+                    <a href="quick-personality.html" class="tool-link">
+                        <i class="fas fa-bolt me-2"></i>빠른 성격 분석
+                    </a>
+                    <a href="mbti-calculator.html" class="tool-link">
+                        <i class="fas fa-calculator me-2"></i>MBTI 점수 계산기
+                    </a>
+                    <a href="type-comparison.html" class="tool-link">
+                        <i class="fas fa-balance-scale me-2"></i>유형 비교 도구
+                    </a>
+                    <a href="daily-mbti.html" class="tool-link">
+                        <i class="fas fa-calendar-day me-2"></i>오늘의 MBTI
+                    </a>
+                    <a href="mbti-quotes.html" class="tool-link">
+                        <i class="fas fa-quote-left me-2"></i>성격 유형별 명언
+                    </a>
+                </div>
+
+                <!-- Popular Searches -->
+                <div class="sidebar-tools">
+                    <h5 class="mb-3">
+                        <i class="fas fa-fire me-2"></i>
+                        인기 검색어
+                    </h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-light text-dark">INFP 특징</span>
+                        <span class="badge bg-light text-dark">INTJ 직업</span>
+                        <span class="badge bg-light text-dark">ENFP 연애</span>
+                        <span class="badge bg-light text-dark">ESTJ 궁합</span>
+                        <span class="badge bg-light text-dark">분석가 유형</span>
+                        <span class="badge bg-light text-dark">외교관 성격</span>
+                        <span class="badge bg-light text-dark">관리자 특성</span>
+                        <span class="badge bg-light text-dark">탐험가 직업</span>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="sidebar-tools">
+                    <h5 class="mb-3">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        MBTI 통계
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="type-stat">
+                                <div class="stat-value">16</div>
+                                <div class="stat-label">성격 유형</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="type-stat">
+                                <div class="stat-value">4</div>
+                                <div class="stat-label">그룹 분류</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="type-stat">
+                                <div class="stat-value">13%</div>
+                                <div class="stat-label">INFP 비율</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="type-stat">
+                                <div class="stat-value">2%</div>
+                                <div class="stat-label">INTJ 비율</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/type-search.js"></script>
+</body>
+</html>

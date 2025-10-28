@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 검사 결과 - MBTI 분석기</title>
+    <meta name="description" content="당신의 MBTI 성격검사 결과를 확인하고 상세한 분석을 받아보세요.">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+</head>
+<body class="result-page">
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">MBTI 분석기</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-outline btn-small" onclick="shareResult()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3"/>
+                        <circle cx="6" cy="12" r="3"/>
+                        <circle cx="18" cy="19" r="3"/>
+                        <path d="M8.59 13.51l6.83 3.98"/>
+                        <path d="M15.41 6.51l-6.82 3.98"/>
+                    </svg>
+                    공유하기
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="result-main">
+        <div class="container">
+            <!-- Loading Screen -->
+            <div class="result-loading" id="resultLoading">
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <h2>결과를 불러오는 중...</h2>
+                </div>
+            </div>
+
+            <!-- Error Screen -->
+            <div class="result-error" id="resultError" style="display: none;">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M15 9l-6 6"/>
+                            <path d="M9 9l6 6"/>
+                        </svg>
+                    </div>
+                    <h2>결과를 찾을 수 없습니다</h2>
+                    <p>테스트를 다시 진행해주세요.</p>
+                    <button class="btn btn-primary" onclick="location.href='index.html'">
+                        홈으로 돌아가기
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Content -->
+            <div class="result-content" id="resultContent" style="display: none;">
+                <!-- Result Header -->
+                <section class="result-header fade-in">
+                    <div class="result-card glass-effect">
+                        <div class="result-type-badge" id="typeBadge">
+                            <span id="typeText">INTJ</span>
+                        </div>
+                        <h1 class="result-title" id="typeName">건축가</h1>
+                        <p class="result-subtitle" id="typeNickname">전략가</p>
+                        <div class="result-certainty">
+                            확실성: <span class="certainty-value" id="certaintyValue">85%</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Personality Description -->
+                <section class="personality-section">
+                    <div class="section-card glass-effect fade-in">
+                        <h2 class="section-title">성격 특징</h2>
+                        <p class="personality-description" id="personalityDescription">
+                            성격 설명을 불러오는 중...
+                        </p>
+                        
+                        <div class="traits-grid">
+                            <div class="traits-column">
+                                <h3 class="traits-title strengths">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    강점
+                                </h3>
+                                <ul class="traits-list" id="strengthsList">
+                                    <!-- Populated by JavaScript -->
+                                </ul>
+                            </div>
+                            
+                            <div class="traits-column">
+                                <h3 class="traits-title weaknesses">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 8v4"/>
+                                        <path d="M12 16h.01"/>
+                                    </svg>
+                                    개선점
+                                </h3>
+                                <ul class="traits-list" id="weaknessesList">
+                                    <!-- Populated by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detailed Analysis -->
+                <section class="analysis-section">
+                    <div class="section-card glass-effect fade-in">
+                        <h2 class="section-title">상세 분석</h2>
+                        <div class="dimensions-analysis" id="dimensionsAnalysis">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Career Recommendations -->
+                <section class="career-section">
+                    <div class="section-card glass-effect fade-in">
+                        <h2 class="section-title">추천 직업</h2>
+                        <div class="career-grid" id="careerGrid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Relationship Info -->
+                <section class="relationship-section">
+                    <div class="section-card glass-effect fade-in">
+                        <h2 class="section-title">인간관계</h2>
+                        <p class="relationship-description" id="relationshipDescription">
+                            인간관계 정보를 불러오는 중...
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Share Section -->
+                <section class="share-section">
+                    <div class="section-card glass-effect fade-in">
+                        <h2 class="section-title">결과 공유하기</h2>
+                        <p class="share-description">친구들과 함께 MBTI 결과를 공유해보세요!</p>
+                        
+                        <div class="share-buttons">
+                            <button class="btn btn-share twitter" onclick="shareToTwitter()">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                </svg>
+                                트위터
+                            </button>
+                            
+                            <button class="btn btn-share facebook" onclick="shareToFacebook()">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                                페이스북
+                            </button>
+                            
+                            <button class="btn btn-share kakao" onclick="shareToKakao()">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 3c5.799 0 10.5 3.664 10.5 8.185 0 4.52-4.701 8.184-10.5 8.184a13.5 13.5 0 01-1.727-.11l-4.408 2.883c-.501.265-.678.236-.472-.413l.892-3.678c-2.88-1.46-4.785-3.99-4.785-6.866C1.5 6.665 6.201 3 12 3z"/>
+                                </svg>
+                                카카오톡
+                            </button>
+                            
+                            <button class="btn btn-share copy" onclick="copyResultLink()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                </svg>
+                                링크 복사
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Action Buttons -->
+                <section class="actions-section">
+                    <div class="actions-container">
+                        <button class="btn btn-primary btn-large" onclick="location.href='test.html'">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            다시 테스트하기
+                        </button>
+                        
+                        <button class="btn btn-outline btn-large" onclick="location.href='index.html'">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                <path d="M9 22V12h6v10"/>
+                            </svg>
+                            홈으로
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MBTI 분석기. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <span class="toast-message" id="toastMessage">메시지</span>
+            <button class="toast-close" onclick="hideToast()">×</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="./assets/js/mbtiData.js"></script>
+    <script src="./assets/js/utils.js"></script>
+    <script src="./assets/js/result.js"></script>
+</body>
+</html>

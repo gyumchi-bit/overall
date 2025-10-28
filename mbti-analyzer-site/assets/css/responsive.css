@@ -1,0 +1,617 @@
+/* ==========================================================================
+   MBTI 분석 사이트 - 반응형 미디어 쿼리
+   ========================================================================== */
+
+/* Breakpoints */
+/* xs: 0px and up (default) */
+/* sm: 576px and up */
+/* md: 768px and up */
+/* lg: 992px and up */
+/* xl: 1200px and up */
+/* xxl: 1400px and up */
+
+/* ==========================================================================
+   Large Devices (Desktops, 992px and up)
+   ========================================================================== */
+@media (max-width: 1199.98px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    .hero-title {
+        font-size: var(--font-size-4xl);
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==========================================================================
+   Medium Devices (Tablets, 768px and up)
+   ========================================================================== */
+@media (max-width: 991.98px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    /* Navigation */
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--white);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: var(--spacing-6);
+        gap: var(--spacing-4);
+        transition: var(--transition-normal);
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-item {
+        width: 100%;
+    }
+    
+    .nav-link {
+        width: 100%;
+        padding: var(--spacing-4);
+        font-size: var(--font-size-lg);
+        border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: var(--gray-50);
+        margin-top: var(--spacing-2);
+        border-radius: var(--radius-lg);
+        max-height: none;
+    }
+    
+    .dropdown-menu a {
+        padding: var(--spacing-3) var(--spacing-6);
+        font-size: var(--font-size-base);
+    }
+    
+    .nav-toggle {
+        display: flex;
+        z-index: var(--z-modal);
+    }
+    
+    .nav-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .nav-toggle.active .bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    
+    .nav-toggle.active .bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+    
+    /* Hero Section */
+    .hero-title {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .hero-description {
+        font-size: var(--font-size-base);
+    }
+    
+    .hero-stats {
+        gap: var(--spacing-6);
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-3);
+    }
+    
+    .btn-large {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Features */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-6);
+    }
+    
+    .feature-card {
+        padding: var(--spacing-6);
+    }
+    
+    /* Types Preview */
+    .types-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-4);
+    }
+    
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-8);
+        text-align: center;
+    }
+    
+    .footer-links {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-6);
+    }
+}
+
+/* ==========================================================================
+   Small Devices (Landscape phones, 576px and up)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+    .container {
+        max-width: 540px;
+        padding: 0 var(--spacing-3);
+    }
+    
+    /* Typography */
+    h1 { font-size: var(--font-size-3xl); }
+    h2 { font-size: var(--font-size-2xl); }
+    h3 { font-size: var(--font-size-xl); }
+    
+    .section {
+        padding: var(--spacing-16) 0;
+    }
+    
+    .section-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    /* Navigation */
+    .nav-container {
+        padding: 0 var(--spacing-3);
+    }
+    
+    .nav-brand {
+        font-size: var(--font-size-lg);
+    }
+    
+    /* Hero Section */
+    .hero {
+        min-height: 80vh;
+        padding: var(--spacing-16) 0;
+    }
+    
+    .hero-title {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--spacing-4);
+    }
+    
+    .hero-description {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--spacing-6);
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: var(--spacing-4);
+        margin-bottom: var(--spacing-6);
+    }
+    
+    .stat-number {
+        font-size: var(--font-size-2xl);
+    }
+    
+    /* Features */
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--spacing-4);
+    }
+    
+    .feature-title {
+        font-size: var(--font-size-lg);
+    }
+    
+    /* Types Preview */
+    .types-filter {
+        gap: var(--spacing-1);
+        margin-bottom: var(--spacing-8);
+    }
+    
+    .filter-btn {
+        padding: var(--spacing-2) var(--spacing-3);
+        font-size: var(--font-size-xs);
+    }
+    
+    .types-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-3);
+    }
+    
+    .type-card {
+        padding: var(--spacing-4);
+    }
+    
+    .type-code {
+        font-size: var(--font-size-xl);
+    }
+    
+    .type-name {
+        font-size: var(--font-size-base);
+    }
+    
+    /* CTA Section */
+    .cta-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .cta-description {
+        font-size: var(--font-size-base);
+    }
+    
+    .cta-features {
+        flex-direction: column;
+        gap: var(--spacing-4);
+    }
+    
+    /* Footer */
+    .footer {
+        padding: var(--spacing-12) 0 var(--spacing-6);
+    }
+    
+    .footer-links {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .link-group {
+        margin-bottom: var(--spacing-6);
+    }
+}
+
+/* ==========================================================================
+   Extra Small Devices (Portrait phones, less than 576px)
+   ========================================================================== */
+@media (max-width: 575.98px) {
+    .container {
+        max-width: 100%;
+        padding: 0 var(--spacing-2);
+    }
+    
+    /* Navigation */
+    .navbar {
+        height: 60px;
+    }
+    
+    .nav-container {
+        height: 60px;
+        padding: 0 var(--spacing-2);
+    }
+    
+    .nav-brand {
+        font-size: var(--font-size-base);
+    }
+    
+    .nav-brand i {
+        font-size: var(--font-size-lg);
+    }
+    
+    .nav-menu {
+        top: 60px;
+        height: calc(100vh - 60px);
+        padding: var(--spacing-4);
+    }
+    
+    /* Hero Section */
+    .hero-title {
+        font-size: var(--font-size-xl);
+        line-height: 1.3;
+    }
+    
+    .hero-description {
+        font-size: var(--font-size-xs);
+    }
+    
+    .btn-large {
+        padding: var(--spacing-3) var(--spacing-6);
+        font-size: var(--font-size-base);
+    }
+    
+    /* Sections */
+    .section {
+        padding: var(--spacing-12) 0;
+    }
+    
+    .section-header {
+        margin-bottom: var(--spacing-12);
+    }
+    
+    .section-title {
+        font-size: var(--font-size-xl);
+    }
+    
+    .section-description {
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Features */
+    .features-grid {
+        gap: var(--spacing-4);
+    }
+    
+    .feature-card {
+        padding: var(--spacing-4);
+    }
+    
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: var(--font-size-xl);
+    }
+    
+    .feature-title {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--spacing-2);
+    }
+    
+    .feature-description {
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Types Preview */
+    .filter-btn {
+        padding: var(--spacing-1) var(--spacing-2);
+        font-size: var(--font-size-xs);
+    }
+    
+    .type-card {
+        padding: var(--spacing-3);
+    }
+    
+    .type-code {
+        font-size: var(--font-size-lg);
+    }
+    
+    .type-name {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--spacing-2);
+    }
+    
+    .type-description {
+        font-size: var(--font-size-xs);
+    }
+    
+    /* CTA Section */
+    .cta {
+        padding: var(--spacing-12) 0;
+    }
+    
+    .cta-title {
+        font-size: var(--font-size-xl);
+    }
+    
+    .cta-description {
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--spacing-6);
+    }
+    
+    .cta-features {
+        gap: var(--spacing-3);
+    }
+    
+    .cta-feature {
+        font-size: var(--font-size-xs);
+    }
+    
+    /* Footer */
+    .footer {
+        padding: var(--spacing-8) 0 var(--spacing-4);
+    }
+    
+    .brand-info {
+        font-size: var(--font-size-lg);
+    }
+    
+    .footer-bottom {
+        font-size: var(--font-size-xs);
+    }
+    
+    /* Utility Adjustments */
+    .scroll-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
+        font-size: var(--font-size-base);
+    }
+    
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        padding: var(--spacing-3);
+    }
+}
+
+/* ==========================================================================
+   Landscape Mobile Devices
+   ========================================================================== */
+@media (max-width: 991.98px) and (orientation: landscape) {
+    .hero {
+        min-height: 100vh;
+        padding: var(--spacing-8) 0;
+    }
+    
+    .hero-stats {
+        flex-direction: row;
+        gap: var(--spacing-6);
+    }
+    
+    .nav-menu {
+        height: calc(100vh - 60px);
+        padding: var(--spacing-4);
+    }
+}
+
+/* ==========================================================================
+   High DPI Displays
+   ========================================================================== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .feature-icon,
+    .type-card,
+    .btn {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Support
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --white: #1a1a1a;
+        --gray-50: #2d2d2d;
+        --gray-100: #3a3a3a;
+        --gray-200: #4a4a4a;
+        --gray-800: #e5e5e5;
+        --gray-900: #ffffff;
+    }
+    
+    .navbar {
+        background: rgba(26, 26, 26, 0.95);
+        border-bottom-color: var(--gray-200);
+    }
+    
+    .dropdown-menu {
+        background: var(--gray-100);
+        border-color: var(--gray-200);
+    }
+    
+    .feature-card,
+    .type-card {
+        background: var(--gray-50);
+        border-color: var(--gray-200);
+    }
+    
+    .footer {
+        background-color: #0f0f0f;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+@media print {
+    .navbar,
+    .nav-toggle,
+    .hero-buttons,
+    .cta,
+    .footer,
+    .scroll-to-top {
+        display: none !important;
+    }
+    
+    .hero {
+        min-height: auto;
+        padding: var(--spacing-8) 0;
+    }
+    
+    .section {
+        padding: var(--spacing-8) 0;
+        break-inside: avoid;
+    }
+    
+    .feature-card,
+    .type-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid var(--gray-300);
+    }
+    
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+    
+    .btn {
+        border: 1px solid var(--gray-300);
+        background: transparent !important;
+        color: inherit !important;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .feature-card:hover,
+    .type-card:hover,
+    .btn:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   Focus Management for Accessibility
+   ========================================================================== */
+@media (any-hover: none) {
+    .dropdown:hover .dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+    }
+    
+    .dropdown-toggle:focus + .dropdown-menu,
+    .dropdown-menu:focus-within {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   Custom Scrollbar for Webkit
+   ========================================================================== */
+@media (min-width: 768px) {
+    .types-menu::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .types-menu::-webkit-scrollbar-track {
+        background: var(--gray-100);
+        border-radius: var(--radius-sm);
+    }
+    
+    .types-menu::-webkit-scrollbar-thumb {
+        background: var(--gray-300);
+        border-radius: var(--radius-sm);
+    }
+    
+    .types-menu::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-400);
+    }
+}

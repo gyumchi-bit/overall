@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 진로 탐색 테스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .navbar {
+            background-color: rgba(0,0,0,0.1) !important;
+        }
+        .career-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .career-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        .progress-bar-custom {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .answer-option {
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .answer-option:hover {
+            background: #e9ecef;
+            border-color: #17a2b8;
+            transform: translateY(-2px);
+        }
+        .answer-option.selected {
+            background: #e8f4f8;
+            border-color: #17a2b8;
+            color: #17a2b8;
+            font-weight: 500;
+        }
+        .answer-option i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        .header-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .question-number {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .modal-custom {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-custom.show {
+            display: flex;
+        }
+        .modal-content-custom {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .career-result {
+            text-align: left;
+            margin-top: 2rem;
+        }
+        .career-category {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .career-category h5 {
+            color: #17a2b8;
+            margin-bottom: 1rem;
+        }
+        .career-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .career-item {
+            background: #17a2b8;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #17a2b8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .intro-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain me-2"></i>MBTI 분석
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">홈</a></li>
+                    <li class="nav-item"><a class="nav-link" href="test.html">테스트</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="career-test.html">진로 탐색</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">분석 도구</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="type-search.html">성격유형 검색기</a></li>
+                            <li><a class="dropdown-item" href="mbti-calculator.html">MBTI 점수 계산기</a></li>
+                            <li><a class="dropdown-item" href="type-comparison.html">유형 비교 도구</a></li>
+                            <li><a class="dropdown-item" href="text-counter.html">글자수 세기</a></li>
+                            <li><a class="dropdown-item" href="quick-personality.html">빠른 성격 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">MBTI란?</a></li>
+                    <li class="nav-item"><a class="nav-link" href="github-settings.html">
+                        <i class="fab fa-github me-1"></i>GitHub 설정
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="career-container">
+        <!-- Header -->
+        <div class="header-title">
+            <h1><i class="fas fa-compass me-3"></i>MBTI 진로 탐색 테스트</h1>
+            <p class="lead">당신의 성격에 맞는 최적의 직업을 찾아보세요</p>
+        </div>
+
+        <!-- Intro Section -->
+        <div class="intro-section" id="introSection">
+            <h3><i class="fas fa-rocket me-2"></i>진로 탐색의 새로운 시작</h3>
+            <p class="mb-3">MBTI 성격 유형을 바탕으로 당신에게 가장 적합한 직업 분야를 분석합니다.</p>
+            <div class="row text-center mt-4">
+                <div class="col-md-4 mb-3">
+                    <i class="fas fa-chart-line fa-2x mb-2"></i>
+                    <h5>12개 질문</h5>
+                    <p>심층적인 진로 성향 분석</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <i class="fas fa-briefcase fa-2x mb-2"></i>
+                    <h5>200+ 직업</h5>
+                    <p>다양한 분야의 직업 추천</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <i class="fas fa-star fa-2x mb-2"></i>
+                    <h5>맞춤 분석</h5>
+                    <p>개인별 특성 기반 추천</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>문항 <span id="currentQuestion">1</span> / <span id="totalQuestions">12</span></span>
+                <span id="progressPercentage">8.3%</span>
+            </div>
+            <div class="progress-bar-custom">
+                <div class="progress-fill" id="progressFill" style="width: 8.3%"></div>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="career-card">
+            <div class="question-number" id="questionNumberDisplay" style="display: none;">문항 <span id="questionNumber">1</span></div>
+            <div class="question-text" id="questionText">준비가 되셨다면 아래 버튼을 클릭하여 진로 탐색을 시작하세요!</div>
+            <div id="answerOptions"></div>
+            <div class="text-center mt-4">
+                <button id="startTestBtn" class="btn btn-info btn-lg px-4">
+                    <i class="fas fa-play me-2"></i>진로 탐색 시작
+                </button>
+                <button id="nextBtn" class="btn btn-primary btn-lg px-4" style="display: none;" disabled>
+                    다음 <i class="fas fa-chevron-right ms-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal-custom" id="completionModal">
+        <div class="modal-content-custom">
+            <h2 class="mb-3"><i class="fas fa-graduation-cap me-2"></i>진로 분석 완료!</h2>
+            <p class="mb-3">당신의 성격에 맞는 직업을 분석하고 있습니다...</p>
+            <div class="spinner" id="loadingSpinner"></div>
+            <div id="careerResults" style="display: none;">
+                <div class="career-result">
+                    <h4 class="text-center mb-4">🎯 당신의 추천 직업 분야</h4>
+                    <div id="careerCategories"></div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-info btn-lg me-2" onclick="location.reload()">
+                            <i class="fas fa-redo me-2"></i>다시 테스트
+                        </button>
+                        <button class="btn btn-success btn-lg me-2" onclick="shareResults()">
+                            <i class="fas fa-share me-2"></i>결과 공유
+                        </button>
+                        <button class="btn btn-secondary btn-lg" onclick="saveCareerToGitHub()">
+                            <i class="fab fa-github me-2"></i>GitHub에 저장
+                        </button>
+                    </div>
+                    <div id="careerSaveStatus" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 진로 탐색 질문 데이터
+        const careerQuestions = [
+            {
+                id: 1,
+                text: "새로운 프로젝트를 시작할 때 당신은?",
+                options: [
+                    { text: "체계적인 계획을 세우고 단계별로 진행한다", value: "J", icon: "fas fa-list-ol" },
+                    { text: "대략적인 방향만 정하고 유연하게 진행한다", value: "P", icon: "fas fa-random" }
+                ]
+            },
+            {
+                id: 2,
+                text: "업무 환경에서 당신이 선호하는 것은?",
+                options: [
+                    { text: "팀과 함께 협력하여 일하는 것", value: "E", icon: "fas fa-users" },
+                    { text: "혼자 집중해서 일하는 것", value: "I", icon: "fas fa-user" }
+                ]
+            },
+            {
+                id: 3,
+                text: "문제를 해결할 때 당신의 접근 방식은?",
+                options: [
+                    { text: "논리적 분석과 데이터를 기반으로 한다", value: "T", icon: "fas fa-chart-bar" },
+                    { text: "직감과 사람들의 감정을 고려한다", value: "F", icon: "fas fa-heart" }
+                ]
+            },
+            {
+                id: 4,
+                text: "새로운 기술이나 지식을 배울 때?",
+                options: [
+                    { text: "실습과 경험을 통해 배우는 것을 선호한다", value: "S", icon: "fas fa-tools" },
+                    { text: "이론과 개념을 먼저 이해하려고 한다", value: "N", icon: "fas fa-lightbulb" }
+                ]
+            },
+            {
+                id: 5,
+                text: "회의나 미팅에서 당신은?",
+                options: [
+                    { text: "적극적으로 의견을 제시하고 토론한다", value: "E", icon: "fas fa-comments" },
+                    { text: "신중하게 듣고 필요할 때만 발언한다", value: "I", icon: "fas fa-ear-listen" }
+                ]
+            },
+            {
+                id: 6,
+                text: "업무의 우선순위를 정할 때?",
+                options: [
+                    { text: "효율성과 결과를 최우선으로 고려한다", value: "T", icon: "fas fa-target" },
+                    { text: "관련된 사람들의 상황을 먼저 고려한다", value: "F", icon: "fas fa-handshake" }
+                ]
+            },
+            {
+                id: 7,
+                text: "장기적인 커리어 계획에 대해서?",
+                options: [
+                    { text: "구체적인 목표와 단계를 설정해 놓는다", value: "J", icon: "fas fa-road" },
+                    { text: "상황에 따라 유연하게 조정할 계획이다", value: "P", icon: "fas fa-wind" }
+                ]
+            },
+            {
+                id: 8,
+                text: "새로운 아이디어가 떠올랐을 때?",
+                options: [
+                    { text: "즉시 실행 가능성을 검토한다", value: "S", icon: "fas fa-cog" },
+                    { text: "더 큰 가능성과 비전을 그려본다", value: "N", icon: "fas fa-telescope" }
+                ]
+            },
+            {
+                id: 9,
+                text: "스트레스를 받는 상황에서?",
+                options: [
+                    { text: "동료들과 대화하며 해결책을 찾는다", value: "E", icon: "fas fa-people-arrows" },
+                    { text: "혼자만의 시간을 가지며 정리한다", value: "I", icon: "fas fa-meditation" }
+                ]
+            },
+            {
+                id: 10,
+                text: "성과를 평가받을 때 중요하게 생각하는 것은?",
+                options: [
+                    { text: "객관적인 수치와 결과", value: "T", icon: "fas fa-calculator" },
+                    { text: "노력 과정과 팀워크", value: "F", icon: "fas fa-award" }
+                ]
+            },
+            {
+                id: 11,
+                text: "업무 스타일에 대해서?",
+                options: [
+                    { text: "정해진 절차와 방법을 따르는 것이 편하다", value: "S", icon: "fas fa-clipboard-check" },
+                    { text: "창의적이고 새로운 방법을 시도하고 싶다", value: "N", icon: "fas fa-magic" }
+                ]
+            },
+            {
+                id: 12,
+                text: "마감일이 다가올 때?",
+                options: [
+                    { text: "미리미리 준비해서 여유있게 완료한다", value: "J", icon: "fas fa-clock" },
+                    { text: "마감 압박감을 활용해서 집중한다", value: "P", icon: "fas fa-bolt" }
+                ]
+            }
+        ];
+
+        // 직업 데이터베이스
+        const careerDatabase = {
+            'ESTJ': {
+                primary: ['CEO/경영진', '프로젝트 매니저', '영업 관리자', '재무 관리자', '운영 관리자'],
+                secondary: ['컨설턴트', '공무원', '교사', '변호사', '회계사'],
+                creative: ['이벤트 플래너', '마케팅 매니저', '부동산 개발자']
+            },
+            'ENTJ': {
+                primary: ['기업 임원', '전략 기획자', '투자 은행가', '경영 컨설턴트', '창업가'],
+                secondary: ['변호사', '판사', '정치인', '대학 교수', '의사'],
+                creative: ['광고 기획자', '영화 제작자', '저널리스트']
+            },
+            'ESFJ': {
+                primary: ['인사 관리자', '고객 서비스 매니저', '사회복지사', '간호사', '교사'],
+                secondary: ['상담사', '영양사', '물리치료사', '행정 관리자', '리셉셔니스트'],
+                creative: ['이벤트 코디네이터', '인테리어 디자이너', '요리사']
+            },
+            'ENFJ': {
+                primary: ['상담사', '심리치료사', '교사', '트레이너', '코치'],
+                secondary: ['인사 담당자', '사회복지사', '목사/종교인', '외교관', '정치인'],
+                creative: ['작가', '배우', '뮤지션', '예술 치료사']
+            },
+            'ISTJ': {
+                primary: ['회계사', '감사관', '데이터 분석가', '시스템 관리자', '품질 관리자'],
+                secondary: ['공무원', '은행원', '보험 심사역', '법무 담당자', '의료 기록사'],
+                creative: ['아키비스트', '도서관 사서', '박물관 큐레이터']
+            },
+            'INTJ': {
+                primary: ['연구원', '시스템 분석가', '전략 기획자', '투자 분석가', '아키텍트'],
+                secondary: ['엔지니어', '의사', '변호사', '교수', '컨설턴트'],
+                creative: ['게임 디자이너', '작가', '영화 감독', '음악 프로듀서']
+            },
+            'ISFJ': {
+                primary: ['간호사', '교사', '상담사', '사회복지사', '의료 보조원'],
+                secondary: ['행정 보조', '고객 서비스', '인사 담당자', '회계 보조', '비서'],
+                creative: ['플로리스트', '베이커리 운영', '수공예 작가']
+            },
+            'INFJ': {
+                primary: ['상담사', '심리학자', '작가', '예술가', '종교인'],
+                secondary: ['교사', '사회복지사', '번역가', '편집자', '연구원'],
+                creative: ['영화 감독', '음악가', '화가', '조각가', '시인']
+            },
+            'ESTP': {
+                primary: ['영업사원', '마케터', '이벤트 기획자', '운동선수', '응급구조사'],
+                secondary: ['경찰관', '소방관', '파일럿', '요리사', '바텐더'],
+                creative: ['연예인', '사진작가', '여행 가이드', 'DJ']
+            },
+            'ENTP': {
+                primary: ['마케터', '광고 기획자', '컨설턴트', '창업가', '발명가'],
+                secondary: ['저널리스트', '변호사', '세일즈맨', '정치인', '연구원'],
+                creative: ['작가', '코미디언', '배우', '크리에이티브 디렉터']
+            },
+            'ESFP': {
+                primary: ['연예인', '이벤트 기획자', '여행 가이드', '요리사', '미용사'],
+                secondary: ['간호사', '교사', '상담사', '마사지사', '펫샵 운영자'],
+                creative: ['댄서', '뮤지션', '패션 디자이너', '메이크업 아티스트']
+            },
+            'ENFP': {
+                primary: ['광고 기획자', '카피라이터', '저널리스트', '상담사', '교사'],
+                secondary: ['마케터', '인사 담당자', '사회복지사', '심리학자', '연구원'],
+                creative: ['작가', '배우', '뮤지션', '화가', '영화 감독']
+            },
+            'ISTP': {
+                primary: ['엔지니어', '프로그래머', '기계공', '전기기사', '파일럿'],
+                secondary: ['의료 기사', '수의사', '포렌식 전문가', '건축가', '제품 디자이너'],
+                creative: ['목공예가', '조각가', '사진작가', '게임 개발자']
+            },
+            'INTP': {
+                primary: ['연구원', '프로그래머', '시스템 분석가', '데이터 사이언티스트', '수학자'],
+                secondary: ['엔지니어', '아키텍트', '교수', '변호사', '의사'],
+                creative: ['게임 디자이너', '작가', '음악 프로듀서', '웹 디자이너']
+            },
+            'ISFP': {
+                primary: ['예술가', '디자이너', '사진작가', '뮤지션', '수의사'],
+                secondary: ['간호사', '물리치료사', '상담사', '교사', '마사지사'],
+                creative: ['화가', '조각가', '패션 디자이너', '플로리스트', '요리사']
+            },
+            'INFP': {
+                primary: ['작가', '상담사', '심리학자', '예술가', '사회복지사'],
+                secondary: ['번역가', '편집자', '교사', '도서관 사서', '연구원'],
+                creative: ['시인', '뮤지션', '화가', '영화 감독', '게임 스토리 작가']
+            }
+        };
+
+        class CareerTest {
+            constructor() {
+                this.currentQuestion = 0;
+                this.answers = {};
+                this.scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.showWelcomeScreen();
+            }
+
+            bindEvents() {
+                document.getElementById('startTestBtn').addEventListener('click', () => this.startTest());
+                document.getElementById('nextBtn').addEventListener('click', () => this.nextQuestion());
+            }
+
+            showWelcomeScreen() {
+                document.getElementById('questionText').innerHTML = 
+                    "<i class='fas fa-compass me-2'></i>당신의 성격에 맞는 최적의 직업을 찾아보세요!";
+                document.getElementById('answerOptions').innerHTML = '';
+            }
+
+            startTest() {
+                document.getElementById('startTestBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('progressContainer').style.display = 'block';
+                document.getElementById('questionNumberDisplay').style.display = 'block';
+                document.getElementById('introSection').style.display = 'none';
+                this.showQuestion();
+            }
+
+            showQuestion() {
+                if (this.currentQuestion >= careerQuestions.length) {
+                    this.completeTest();
+                    return;
+                }
+
+                const question = careerQuestions[this.currentQuestion];
+                this.updateQuestionDisplay(question);
+                this.updateProgress();
+                this.updateNavigationButtons();
+            }
+
+            updateQuestionDisplay(question) {
+                document.getElementById('questionNumber').textContent = this.currentQuestion + 1;
+                document.getElementById('questionText').textContent = question.text;
+                
+                const answerOptions = document.getElementById('answerOptions');
+                answerOptions.innerHTML = '';
+                
+                question.options.forEach((option) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'answer-option';
+                    optionElement.innerHTML = `<i class="${option.icon}"></i>${option.text}`;
+                    
+                    const previousAnswer = this.answers[question.id];
+                    if (previousAnswer && previousAnswer.value === option.value) {
+                        optionElement.classList.add('selected');
+                    }
+                    
+                    optionElement.addEventListener('click', () => {
+                        this.selectAnswer(question, option, optionElement);
+                    });
+                    
+                    answerOptions.appendChild(optionElement);
+                });
+            }
+
+            selectAnswer(question, option, element) {
+                document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+                element.classList.add('selected');
+                
+                this.answers[question.id] = {
+                    value: option.value,
+                    text: option.text
+                };
+                
+                document.getElementById('nextBtn').disabled = false;
+            }
+
+            nextQuestion() {
+                this.currentQuestion++;
+                this.showQuestion();
+            }
+
+            updateProgress() {
+                const progress = ((this.currentQuestion + 1) / careerQuestions.length) * 100;
+                document.getElementById('currentQuestion').textContent = this.currentQuestion + 1;
+                document.getElementById('totalQuestions').textContent = careerQuestions.length;
+                document.getElementById('progressPercentage').textContent = `${Math.round(progress)}%`;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            updateNavigationButtons() {
+                const nextBtn = document.getElementById('nextBtn');
+                const currentAnswer = this.answers[careerQuestions[this.currentQuestion].id];
+                nextBtn.disabled = !currentAnswer;
+                
+                if (this.currentQuestion === careerQuestions.length - 1) {
+                    nextBtn.innerHTML = '결과 보기 <i class="fas fa-chart-line ms-1"></i>';
+                } else {
+                    nextBtn.innerHTML = '다음 <i class="fas fa-chevron-right ms-1"></i>';
+                }
+            }
+
+            calculateScores() {
+                this.scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+                Object.values(this.answers).forEach(answer => {
+                    this.scores[answer.value]++;
+                });
+            }
+
+            getMBTIType() {
+                this.calculateScores();
+                let type = '';
+                type += this.scores.E >= this.scores.I ? 'E' : 'I';
+                type += this.scores.S >= this.scores.N ? 'S' : 'N';
+                type += this.scores.T >= this.scores.F ? 'T' : 'F';
+                type += this.scores.J >= this.scores.P ? 'J' : 'P';
+                return type;
+            }
+
+            completeTest() {
+                const mbtiType = this.getMBTIType();
+                document.getElementById('completionModal').classList.add('show');
+                
+                // 결과 저장
+                localStorage.setItem('careerTestResult', JSON.stringify({
+                    type: mbtiType,
+                    scores: this.scores,
+                    answers: this.answers,
+                    completedAt: new Date().toISOString()
+                }));
+
+                // 3초 후 결과 표시
+                setTimeout(() => {
+                    this.showResults(mbtiType);
+                }, 3000);
+            }
+
+            showResults(mbtiType) {
+                document.getElementById('loadingSpinner').style.display = 'none';
+                const careers = careerDatabase[mbtiType];
+                
+                const categoriesHtml = `
+                    <div class="career-category">
+                        <h5><i class="fas fa-star me-2"></i>추천 핵심 직업</h5>
+                        <div class="career-list">
+                            ${careers.primary.map(job => `<span class="career-item">${job}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="career-category">
+                        <h5><i class="fas fa-briefcase me-2"></i>적합한 직업</h5>
+                        <div class="career-list">
+                            ${careers.secondary.map(job => `<span class="career-item">${job}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="career-category">
+                        <h5><i class="fas fa-palette me-2"></i>창의적 직업</h5>
+                        <div class="career-list">
+                            ${careers.creative.map(job => `<span class="career-item">${job}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('careerCategories').innerHTML = categoriesHtml;
+                document.getElementById('careerResults').style.display = 'block';
+            }
+        }
+
+        function shareResults() {
+            const result = localStorage.getItem('careerTestResult');
+            if (result) {
+                const data = JSON.parse(result);
+                const text = `MBTI 진로 탐색 결과: ${data.type} 유형\n\n나에게 맞는 직업을 찾았어요! 당신도 테스트해보세요.`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'MBTI 진로 탐색 테스트 결과',
+                        text: text,
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(text + '\n' + window.location.href)
+                        .then(() => alert('결과가 클립보드에 복사되었습니다!'));
+                }
+            }
+        }
+
+        // 테스트 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            new CareerTest();
+        });
+
+        // GitHub 진로 테스트 결과 저장 함수
+        async function saveCareerToGitHub() {
+            const saveStatus = document.getElementById('careerSaveStatus');
+            
+            try {
+                const settings = localStorage.getItem('github_api_settings');
+                if (!settings) {
+                    saveStatus.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            GitHub API가 설정되지 않았습니다. 
+                            <a href="github-settings.html" class="alert-link">설정 페이지</a>에서 먼저 설정해주세요.
+                        </div>
+                    `;
+                    return;
+                }
+
+                saveStatus.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-spinner fa-spin me-2"></i>GitHub에 저장 중...
+                    </div>
+                `;
+
+                const testResult = JSON.parse(localStorage.getItem('careerTestResult'));
+                const githubSettings = JSON.parse(atob(settings));
+                const careers = careerDatabase[testResult.type];
+                
+                const careerContent = `# MBTI 진로 탐색 결과
+
+## 분석 결과
+- **MBTI 유형**: ${testResult.type}
+- **테스트 날짜**: ${new Date(testResult.completedAt).toLocaleString('ko-KR')}
+
+## 추천 직업 분야
+
+### 🌟 핵심 추천 직업
+${careers.primary.map(job => `- ${job}`).join('\n')}
+
+### 💼 적합한 직업
+${careers.secondary.map(job => `- ${job}`).join('\n')}
+
+### 🎨 창의적 직업
+${careers.creative.map(job => `- ${job}`).join('\n')}
+
+## 상세 점수
+${Object.entries(testResult.scores).map(([key, value]) => `- ${key}: ${value}점`).join('\n')}
+
+## 답변 내역
+${Object.entries(testResult.answers).map(([key, value]) => `**문항 ${key}**: ${value.text}`).join('\n')}
+
+---
+*이 결과는 MBTI 진로 탐색 사이트에서 자동 생성되었습니다.*
+`;
+
+                const response = await fetch('https://api.github.com/gists', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${githubSettings.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        description: `MBTI 진로 탐색 결과 - ${testResult.type}`,
+                        public: false,
+                        files: {
+                            [`career-analysis-${testResult.type}-${new Date().toISOString().split('T')[0]}.md`]: {
+                                content: careerContent
+                            }
+                        }
+                    })
+                });
+
+                if (response.ok) {
+                    const gist = await response.json();
+                    saveStatus.innerHTML = `
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            GitHub에 성공적으로 저장되었습니다!
+                            <a href="${gist.html_url}" target="_blank" class="alert-link ms-2">
+                                <i class="fas fa-external-link-alt"></i> 확인하기
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    throw new Error('GitHub 저장 실패');
+                }
+            } catch (error) {
+                saveStatus.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-times-circle me-2"></i>
+                        저장 실패: ${error.message}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

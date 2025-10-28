@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글자수 세기 - 텍스트 분석 도구</title>
+    <meta name="description" content="실시간으로 글자수, 단어수, 문장수, 단락수를 세는 유용한 텍스트 분석 도구입니다. 간편하고 정확한 글자수 계산기.">
+    <meta name="keywords" content="글자수 세기, 텍스트 분석, 단어수 계산, 문장수 계산, 글자수 계산기">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="assets/css/bootstrap-integrated.css">
+    
+    <style>
+        .counter-container {
+            background: var(--gradient-primary);
+            color: white;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+        
+        .counter-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--bs-border-radius-xl);
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        
+        .text-input-section {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .text-area {
+            border: 2px solid var(--bs-gray-200);
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            min-height: 300px;
+            transition: all 0.3s ease;
+        }
+        
+        .text-area:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            outline: none;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--bs-primary);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--bs-gray-800);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--bs-gray-600);
+            margin-bottom: 0;
+        }
+        
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .control-btn {
+            background: white;
+            border: 2px solid var(--bs-primary);
+            color: var(--bs-primary);
+            padding: 0.75rem 1rem;
+            border-radius: var(--bs-border-radius);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .control-btn:hover {
+            background: var(--bs-primary);
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        .additional-stats {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .additional-stats .row {
+            margin-bottom: 1rem;
+        }
+        
+        .additional-stats .col-6 {
+            border-right: 1px solid var(--bs-gray-200);
+        }
+        
+        .additional-stats .col-6:last-child {
+            border-right: none;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bs-primary);
+            display: block;
+        }
+        
+        .stat-desc {
+            font-size: 0.875rem;
+            color: var(--bs-gray-600);
+            margin-top: 0.25rem;
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--bs-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--bs-gray-800);
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--bs-gray-600);
+            line-height: 1.5;
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1050;
+        }
+        
+        @media (max-width: 768px) {
+            .counter-container {
+                padding-top: 80px;
+            }
+            
+            .counter-card {
+                padding: 1.5rem;
+            }
+            
+            .text-input-section {
+                padding: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .stat-icon {
+                font-size: 2rem;
+            }
+            
+            .control-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .additional-stats .col-6 {
+                border-right: none;
+                border-bottom: 1px solid var(--bs-gray-200);
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+            }
+            
+            .additional-stats .col-6:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain"></i>
+                <span>MBTI 분석</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">홈</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            테스트
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="testDropdown">
+                            <li><a class="dropdown-item" href="test.html">
+                                <i class="fas fa-play-circle me-2"></i>무료 MBTI 테스트</a></li>
+                            <li><a class="dropdown-item" href="quick-personality.html">
+                                <i class="fas fa-bolt me-2"></i>빠른 성격 분석</a></li>
+                            <li><a class="dropdown-item" href="career-test.html">
+                                <i class="fas fa-briefcase me-2"></i>직업 적성 테스트</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="typesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="typesDropdown">
+                            <li><h6 class="dropdown-header">분석가 (NT)</h6></li>
+                            <li><a class="dropdown-item" href="types/intj.html">INTJ - 건축가</a></li>
+                            <li><a class="dropdown-item" href="types/intp.html">INTP - 논리술사</a></li>
+                            <li><a class="dropdown-item" href="types/entj.html">ENTJ - 통솔자</a></li>
+                            <li><a class="dropdown-item" href="types/entp.html">ENTP - 변론가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">외교관 (NF)</h6></li>
+                            <li><a class="dropdown-item" href="types/infj.html">INFJ - 옹호자</a></li>
+                            <li><a class="dropdown-item" href="types/infp.html">INFP - 중재자</a></li>
+                            <li><a class="dropdown-item" href="types/enfj.html">ENFJ - 선도자</a></li>
+                            <li><a class="dropdown-item" href="types/enfp.html">ENFP - 활동가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="types/istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="types/isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item" href="types/estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="types/esfj.html">ESFJ - 집정관</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">탐험가 (SP)</h6></li>
+                            <li><a class="dropdown-item" href="types/istp.html">ISTP - 장인</a></li>
+                            <li><a class="dropdown-item" href="types/isfp.html">ISFP - 모험가</a></li>
+                            <li><a class="dropdown-item" href="types/estp.html">ESTP - 사업가</a></li>
+                            <li><a class="dropdown-item" href="types/esfp.html">ESFP - 연예인</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="toolsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            분석 도구
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <li><a class="dropdown-item" href="type-search.html">
+                                <i class="fas fa-search me-2"></i>성격유형 검색기</a></li>
+                            <li><a class="dropdown-item" href="mbti-calculator.html">
+                                <i class="fas fa-calculator me-2"></i>MBTI 점수 계산기</a></li>
+                            <li><a class="dropdown-item" href="type-comparison.html">
+                                <i class="fas fa-balance-scale me-2"></i>유형 비교 도구</a></li>
+                            <li><a class="dropdown-item active" href="text-counter.html">
+                                <i class="fas fa-text-width me-2"></i>글자수 세기</a></li>
+                            <li><a class="dropdown-item" href="compatibility.html">
+                                <i class="fas fa-heart me-2"></i>궁합 분석</a></li>
+                            <li><a class="dropdown-item" href="career-guide.html">
+                                <i class="fas fa-chart-line me-2"></i>직업 가이드</a></li>
+                            <li><a class="dropdown-item" href="relationship.html">
+                                <i class="fas fa-users me-2"></i>인간관계 분석</a></li>
+                            <li><a class="dropdown-item" href="statistics.html">
+                                <i class="fas fa-chart-bar me-2"></i>통계 및 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">MBTI란?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Main Content -->
+    <div class="counter-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <!-- Header -->
+                    <div class="counter-card text-center">
+                        <h1 class="h2 mb-3 text-dark">
+                            <i class="fas fa-text-width me-2 text-primary"></i>
+                            글자수 세기
+                        </h1>
+                        <p class="text-muted mb-4">
+                            텍스트를 입력하면 실시간으로 글자수, 단어수, 문장수, 단락수를 계산합니다.<br>
+                            간편하고 정확한 텍스트 분석 도구입니다.
+                        </p>
+                    </div>
+
+                    <!-- Text Input Section -->
+                    <div class="text-input-section">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="text-dark mb-0">
+                                <i class="fas fa-edit me-2 text-primary"></i>
+                                텍스트 입력
+                            </h5>
+                            <span class="badge bg-primary" id="liveCounter">0자</span>
+                        </div>
+                        
+                        <textarea 
+                            class="form-control text-area" 
+                            id="textInput" 
+                            placeholder="여기에 분석할 텍스트를 입력하세요...&#10;&#10;• 실시간으로 글자수가 계산됩니다&#10;• 공백 포함/제외 옵션을 선택할 수 있습니다&#10;• 다양한 텍스트 통계를 확인하세요"></textarea>
+                        
+                        <div class="control-buttons mt-3">
+                            <button class="control-btn" id="clearBtn">
+                                <i class="fas fa-trash me-2"></i>전체 지우기
+                            </button>
+                            <button class="control-btn" id="copyBtn">
+                                <i class="fas fa-copy me-2"></i>텍스트 복사
+                            </button>
+                            <button class="control-btn" id="pasteBtn">
+                                <i class="fas fa-paste me-2"></i>붙여넣기
+                            </button>
+                            <button class="control-btn" id="undoBtn">
+                                <i class="fas fa-undo me-2"></i>실행 취소
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Statistics -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-font stat-icon"></i>
+                            <div class="stat-number" id="charCount">0</div>
+                            <div class="stat-label">글자수 (공백 포함)</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-text-height stat-icon"></i>
+                            <div class="stat-number" id="charCountNoSpace">0</div>
+                            <div class="stat-label">글자수 (공백 제외)</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-bookmark stat-icon"></i>
+                            <div class="stat-number" id="wordCount">0</div>
+                            <div class="stat-label">단어수</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-paragraph stat-icon"></i>
+                            <div class="stat-number" id="sentenceCount">0</div>
+                            <div class="stat-label">문장수</div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Statistics -->
+                    <div class="additional-stats">
+                        <h5 class="text-dark mb-4">
+                            <i class="fas fa-chart-pie me-2 text-primary"></i>
+                            상세 분석
+                        </h5>
+                        
+                        <div class="row g-3">
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="paragraphCount">0</span>
+                                    <div class="stat-desc">단락수</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="lineCount">0</span>
+                                    <div class="stat-desc">줄 수</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="avgWordsPerSentence">0</span>
+                                    <div class="stat-desc">문장당 평균 단어수</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="avgCharsPerWord">0</span>
+                                    <div class="stat-desc">단어당 평균 글자수</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="row g-3">
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="spaceCount">0</span>
+                                    <div class="stat-desc">공백 수</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="digitCount">0</span>
+                                    <div class="stat-desc">숫자 개수</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="punctuationCount">0</span>
+                                    <div class="stat-desc">문장부호 개수</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="readingTime">0분</span>
+                                    <div class="stat-desc">예상 읽기 시간</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Cards -->
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <i class="fas fa-stopwatch feature-icon"></i>
+                            <div class="feature-title">실시간 계산</div>
+                            <div class="feature-desc">
+                                텍스트를 입력하는 동시에 모든 통계가 실시간으로 업데이트됩니다.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-mobile-alt feature-icon"></i>
+                            <div class="feature-title">모든 기기 지원</div>
+                            <div class="feature-desc">
+                                데스크톱, 태블릿, 모바일 등 모든 기기에서 완벽하게 작동합니다.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt feature-icon"></i>
+                            <div class="feature-title">개인정보 보호</div>
+                            <div class="feature-desc">
+                                입력한 텍스트는 서버로 전송되지 않고 브라우저에서만 처리됩니다.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-tools feature-icon"></i>
+                            <div class="feature-title">다양한 기능</div>
+                            <div class="feature-desc">
+                                복사, 붙여넣기, 실행취소 등 편리한 텍스트 편집 기능을 제공합니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/text-counter.js"></script>
+</body>
+</html>

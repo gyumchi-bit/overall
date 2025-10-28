@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 무료 성격 테스트 - 정확한 심리 분석</title>
+    <meta name="description" content="60문항의 정확한 MBTI 성격 테스트로 당신의 진정한 성격 유형을 발견하세요. 실시간 진행률 표시와 상세한 결과 분석을 제공합니다.">
+    <meta name="keywords" content="MBTI 테스트, 성격 검사, 심리 테스트, 성격 유형, 무료 테스트">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="assets/css/bootstrap-integrated.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain"></i>
+                <span>MBTI 분석</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">홈</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="testDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            테스트
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="testDropdown">
+                            <li><a class="dropdown-item active" href="test.html">
+                                <i class="fas fa-play-circle me-2"></i>무료 MBTI 테스트</a></li>
+                            <li><a class="dropdown-item" href="quick-test.html">
+                                <i class="fas fa-bolt me-2"></i>빠른 성격 테스트</a></li>
+                            <li><a class="dropdown-item" href="career-test.html">
+                                <i class="fas fa-briefcase me-2"></i>직업 적성 테스트</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="typesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="typesDropdown">
+                            <li><h6 class="dropdown-header">분석가 (NT)</h6></li>
+                            <li><a class="dropdown-item" href="types/intj.html">INTJ - 건축가</a></li>
+                            <li><a class="dropdown-item" href="types/intp.html">INTP - 논리술사</a></li>
+                            <li><a class="dropdown-item" href="types/entj.html">ENTJ - 통솔자</a></li>
+                            <li><a class="dropdown-item" href="types/entp.html">ENTP - 변론가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">외교관 (NF)</h6></li>
+                            <li><a class="dropdown-item" href="types/infj.html">INFJ - 옹호자</a></li>
+                            <li><a class="dropdown-item" href="types/infp.html">INFP - 중재자</a></li>
+                            <li><a class="dropdown-item" href="types/enfj.html">ENFJ - 선도자</a></li>
+                            <li><a class="dropdown-item" href="types/enfp.html">ENFP - 활동가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="types/istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="types/isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item" href="types/estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="types/esfj.html">ESFJ - 집정관</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">탐험가 (SP)</h6></li>
+                            <li><a class="dropdown-item" href="types/istp.html">ISTP - 장인</a></li>
+                            <li><a class="dropdown-item" href="types/isfp.html">ISFP - 모험가</a></li>
+                            <li><a class="dropdown-item" href="types/estp.html">ESTP - 사업가</a></li>
+                            <li><a class="dropdown-item" href="types/esfp.html">ESFP - 연예인</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            분석 도구
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <li><a class="dropdown-item" href="compatibility.html">
+                                <i class="fas fa-heart me-2"></i>궁합 분석</a></li>
+                            <li><a class="dropdown-item" href="career-guide.html">
+                                <i class="fas fa-chart-line me-2"></i>직업 가이드</a></li>
+                            <li><a class="dropdown-item" href="relationship.html">
+                                <i class="fas fa-users me-2"></i>인간관계 분석</a></li>
+                            <li><a class="dropdown-item" href="statistics.html">
+                                <i class="fas fa-chart-bar me-2"></i>통계 및 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">MBTI란?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Test Container -->
+    <div class="test-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Test Introduction -->
+                    <div class="card test-card mb-4" id="introCard">
+                        <div class="test-header">
+                            <h1 class="h2 mb-3">
+                                <i class="fas fa-brain me-2"></i>
+                                MBTI 성격 유형 테스트
+                            </h1>
+                            <p class="mb-0">
+                                60개의 질문으로 당신의 진정한 성격을 발견하세요.<br>
+                                정확하고 과학적인 분석을 제공합니다.
+                            </p>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-clock text-primary fs-4 me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">소요 시간</h6>
+                                            <small class="text-muted">약 3-5분</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-list text-success fs-4 me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">질문 수</h6>
+                                            <small class="text-muted">총 60문항</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-users text-warning fs-4 me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">성격 유형</h6>
+                                            <small class="text-muted">16가지 분류</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-shield-alt text-info fs-4 me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1">정확도</h6>
+                                            <small class="text-muted">95% 이상</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info" role="alert">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                <strong>팁:</strong> 너무 오래 생각하지 마시고, 직감적으로 답변해주세요. 
+                                더 정확한 결과를 얻을 수 있습니다.
+                            </div>
+                            
+                            <div class="text-center">
+                                <button class="btn btn-primary btn-lg px-5" id="startTestBtn">
+                                    <i class="fas fa-play me-2"></i>
+                                    테스트 시작하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test Progress -->
+                    <div class="card test-card d-none" id="testCard">
+                        <div class="test-header">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4 mb-0">MBTI 성격 테스트</h2>
+                                <span class="badge bg-light text-dark fs-6" id="questionCounter">1/60</span>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="progress test-progress mb-3">
+                                <div class="progress-bar test-progress-bar" role="progressbar" style="width: 0%" 
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar">
+                                </div>
+                            </div>
+                            
+                            <!-- Dimension Scores -->
+                            <div class="row g-2 mt-3">
+                                <div class="col-3">
+                                    <div class="text-center">
+                                        <small class="d-block">E ↔ I</small>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-info" id="eiProgress" style="width: 50%"></div>
+                                        </div>
+                                        <small class="text-muted" id="eiScore">0</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="text-center">
+                                        <small class="d-block">S ↔ N</small>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-success" id="snProgress" style="width: 50%"></div>
+                                        </div>
+                                        <small class="text-muted" id="snScore">0</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="text-center">
+                                        <small class="d-block">T ↔ F</small>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-warning" id="tfProgress" style="width: 50%"></div>
+                                        </div>
+                                        <small class="text-muted" id="tfScore">0</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="text-center">
+                                        <small class="d-block">J ↔ P</small>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-danger" id="jpProgress" style="width: 50%"></div>
+                                        </div>
+                                        <small class="text-muted" id="jpScore">0</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="question-container">
+                            <h3 class="question-text mb-4" id="questionText">
+                                질문이 여기에 표시됩니다.
+                            </h3>
+                            
+                            <div class="answer-options" id="answerOptions">
+                                <!-- 답변 옵션들이 동적으로 생성됩니다 -->
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button class="btn btn-outline-secondary" id="prevBtn" disabled>
+                                    <i class="fas fa-chevron-left me-2"></i>이전
+                                </button>
+                                <button class="btn btn-primary" id="nextBtn" disabled>
+                                    다음<i class="fas fa-chevron-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading Screen -->
+                    <div class="card test-card d-none" id="loadingCard">
+                        <div class="card-body text-center p-5">
+                            <div class="spinner-border spinner-border-custom mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <h4 class="mb-3">결과를 분석하고 있습니다...</h4>
+                            <p class="text-muted">잠시만 기다려주세요. 정확한 분석을 위해 처리 중입니다.</p>
+                            <div class="progress mt-3" style="height: 8px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     id="analysisProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Progress Modal -->
+    <div class="modal fade" id="saveProgressModal" tabindex="-1" aria-labelledby="saveProgressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="saveProgressModalLabel">
+                        <i class="fas fa-save me-2"></i>진행 상황 저장
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>테스트를 중단하시겠습니까? 현재 진행 상황이 자동으로 저장됩니다.</p>
+                    <p class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        저장된 진행 상황은 7일간 유지되며, 언제든지 이어서 테스트를 진행할 수 있습니다.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">계속하기</button>
+                    <button type="button" class="btn btn-primary" id="saveProgressBtn">저장하고 나가기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/test.js"></script>
+    <script>
+        // Bootstrap 통합 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 툴팁 초기화
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // 키보드 네비게이션 추가
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft' && !document.getElementById('prevBtn').disabled) {
+                    document.getElementById('prevBtn').click();
+                } else if (e.key === 'ArrowRight' && !document.getElementById('nextBtn').disabled) {
+                    document.getElementById('nextBtn').click();
+                }
+            });
+
+            // 페이지 나가기 확인
+            window.addEventListener('beforeunload', function(e) {
+                if (currentQuestionIndex > 0 && currentQuestionIndex < questions.length) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

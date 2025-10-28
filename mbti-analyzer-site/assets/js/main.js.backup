@@ -1,0 +1,486 @@
+// Main Page JavaScript (index.html)
+
+// Initialize page when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM 로드 완료, 페이지 초기화 시작...');
+    
+    // 에러 표시를 위한 div 추가
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'debug-info';
+    errorDiv.style.cssText = `
+        position: fixed; top: 10px; left: 10px; 
+        background: rgba(0,0,0,0.8); color: white; 
+        padding: 10px; border-radius: 5px; 
+        font-size: 12px; max-width: 300px; 
+        z-index: 10000; font-family: monospace;
+    `;
+    document.body.appendChild(errorDiv);
+    
+    window.debugLog = function(msg) {
+        console.log(msg);
+        errorDiv.innerHTML += msg + '<br>';
+    };
+    
+    debugLog('페이지 초기화 시작...');
+    initializePage();
+});
+
+function initializePage() {
+    debugLog('페이지 초기화 함수 실행...');
+    
+    // Check if required variables exist
+    debugLog('mbtiTypes 존재: ' + (typeof mbtiTypes !== 'undefined'));
+    debugLog('mbtiColors 존재: ' + (typeof mbtiColors !== 'undefined'));
+    debugLog('DOMUtils 존재: ' + (typeof DOMUtils !== 'undefined'));
+    
+    // Initialize animations
+    initializeAnimations();
+    
+    // Initialize navigation
+    initializeNavigation();
+    
+    // Initialize interactive elements
+    initializeInteractiveElements();
+    
+    // Initialize MBTI types display
+    initializeMBTITypesDisplay();
+    
+    // Initialize FAQ functionality
+    initializeFAQ();
+    
+    // Initialize scroll effects
+    initializeScrollEffects();
+    
+    debugLog('페이지 초기화 완료');
+}
+
+// Navigation functionality
+function initializeNavigation() {
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+    }
+
+    // Smooth scroll for navigation links
+    const navLinks = document.querySelectorAll('a[href^="#"]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                DOMUtils.scrollToElement(targetElement, 80);
+                
+                // Close mobile menu if open
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
+            }
+        });
+    });
+}
+
+// Initialize animations
+function initializeAnimations() {
+    // Add entrance animations to elements
+    const animatedElements = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right');
+    
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    // Hero text animation
+    animateHeroText();
+}
+
+function animateHeroText() {
+    const heroTitle = document.querySelector('.hero-title');
+    if (!heroTitle) return;
+
+    const text = heroTitle.textContent;
+    heroTitle.textContent = '';
+    
+    const words = text.split(' ');
+    words.forEach((word, index) => {
+        const span = document.createElement('span');
+        span.textContent = word + ' ';
+        span.style.opacity = '0';
+        span.style.transform = 'translateY(20px)';
+        span.style.display = 'inline-block';
+        span.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        
+        heroTitle.appendChild(span);
+        
+        setTimeout(() => {
+            span.style.opacity = '1';
+            span.style.transform = 'translateY(0)';
+        }, 100 + index * 100);
+    });
+}
+
+// Interactive elements
+function initializeInteractiveElements() {
+    console.log('인터랙티브 요소 초기화 시작...');
+    
+    // CTA button interactions - both class and ID selectors
+    const ctaButtons = document.querySelectorAll('.cta-button, #startTestBtn');
+    console.log('찾은 CTA 버튼 수:', ctaButtons.length);
+    
+    ctaButtons.forEach(button => {
+        console.log('버튼에 이벤트 리스너 추가:', button);
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('테스트 시작 버튼 클릭됨!');
+            
+            // Add ripple effect
+            addRippleEffect(button, e);
+            
+            // Navigate to test page
+            setTimeout(() => {
+                console.log('test.html로 이동...');
+                window.location.href = 'test.html';
+            }, 300);
+        });
+    });
+
+    // Feature cards hover effects
+    const featureCards = document.querySelectorAll('.feature-card');
+    featureCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
+// MBTI Types display
+function initializeMBTITypesDisplay() {
+    console.log('MBTI 타입 디스플레이 초기화 시작...');
+    console.log('mbtiTypes 존재 여부:', typeof mbtiTypes !== 'undefined');
+    console.log('mbtiColors 존재 여부:', typeof mbtiColors !== 'undefined');
+    
+    const typesContainer = document.querySelector('.mbti-types-grid, #typesGrid, .types-grid');
+    console.log('타입 컨테이너 찾음:', typesContainer);
+    
+    if (!typesContainer) {
+        console.log('타입 컨테이너를 찾을 수 없습니다.');
+        return;
+    }
+
+    // Create MBTI type cards
+    if (typeof mbtiTypes !== 'undefined') {
+        console.log('MBTI 타입 카드 생성 시작...');
+        Object.entries(mbtiTypes).forEach(([type, data]) => {
+            console.log('카드 생성:', type);
+            const card = createMBTITypeCard(type, data);
+            typesContainer.appendChild(card);
+        });
+        console.log('MBTI 타입 카드 생성 완료');
+    } else {
+        console.error('mbtiTypes가 정의되지 않았습니다.');
+    }
+}
+
+function createMBTITypeCard(type, data) {
+    if (typeof DOMUtils === 'undefined') {
+        debugLog('DOMUtils가 정의되지 않음!');
+        const card = document.createElement('div');
+        card.className = 'mbti-type-card';
+        card.innerHTML = `<h3>${type}</h3><p>${data.nickname}</p>`;
+        return card;
+    }
+    
+    const card = DOMUtils.createElement('div', 'mbti-type-card');
+    
+    if (typeof mbtiColors !== 'undefined' && mbtiColors[type]) {
+        card.style.setProperty('--type-color', mbtiColors[type]);
+    }
+    
+    card.innerHTML = `
+        <div class="type-header">
+            <h3 class="type-name">${type}</h3>
+            <p class="type-nickname">${data.nickname}</p>
+        </div>
+        <div class="type-content">
+            <p class="type-description">${data.description}</p>
+            <div class="type-traits">
+                <span class="trait">${data.traits[0]}</span>
+                <span class="trait">${data.traits[1]}</span>
+            </div>
+        </div>
+    `;
+
+    // Add click interaction
+    card.addEventListener('click', () => {
+        showMBTITypeModal(type, data);
+    });
+
+    // Add hover effect
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-5px)';
+        card.style.boxShadow = `0 10px 30px ${mbtiColors[type]}33`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+        card.style.boxShadow = '';
+    });
+
+    return card;
+}
+
+function showMBTITypeModal(type, data) {
+    const modal = createModal();
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modalContent.innerHTML = `
+        <div class="modal-header">
+            <h2 style="color: ${mbtiColors[type]}">${type} - ${data.nickname}</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="mb-4">${data.description}</p>
+            
+            <div class="mb-4">
+                <h4>주요 특징</h4>
+                <ul class="trait-list">
+                    ${data.traits.map(trait => `<li>${trait}</li>`).join('')}
+                </ul>
+            </div>
+            
+            <div class="mb-4">
+                <h4>강점</h4>
+                <ul class="strength-list">
+                    ${data.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                </ul>
+            </div>
+            
+            <div class="mb-4">
+                <h4>추천 직업</h4>
+                <div class="career-tags">
+                    ${data.careers.slice(0, 6).map(career => `<span class="career-tag">${career}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Add close functionality
+    const closeBtn = modalContent.querySelector('.modal-close');
+    closeBtn.addEventListener('click', () => {
+        closeModal(modal);
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal(modal);
+        }
+    });
+
+    document.body.appendChild(modal);
+    
+    // Show modal with animation
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
+
+function createModal() {
+    const modal = DOMUtils.createElement('div', 'modal');
+    const modalContent = DOMUtils.createElement('div', 'modal-content');
+    
+    modal.appendChild(modalContent);
+    return modal;
+}
+
+function closeModal(modal) {
+    modal.classList.remove('show');
+    setTimeout(() => {
+        if (modal.parentNode) {
+            modal.parentNode.removeChild(modal);
+        }
+    }, 300);
+}
+
+// FAQ functionality
+function initializeFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon');
+        
+        if (question && answer) {
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        const otherIcon = otherItem.querySelector('.faq-icon');
+                        if (otherAnswer) AnimationUtils.slideUp(otherAnswer, 200);
+                        if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                // Toggle current item
+                if (isActive) {
+                    item.classList.remove('active');
+                    AnimationUtils.slideUp(answer, 200);
+                    if (icon) icon.style.transform = 'rotate(0deg)';
+                } else {
+                    item.classList.add('active');
+                    AnimationUtils.slideDown(answer, 200);
+                    if (icon) icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        }
+    });
+}
+
+// Scroll effects
+function initializeScrollEffects() {
+    // Parallax effect for hero section
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            hero.style.transform = `translateY(${rate}px)`;
+        });
+    }
+
+    // Navbar background on scroll
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // Progress indicator
+    createScrollProgressIndicator();
+}
+
+function createScrollProgressIndicator() {
+    const progressBar = DOMUtils.createElement('div', 'scroll-progress');
+    progressBar.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        z-index: 9999;
+        transition: width 0.1s ease;
+    `;
+    
+    document.body.appendChild(progressBar);
+    
+    window.addEventListener('scroll', () => {
+        const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        progressBar.style.width = `${Math.min(scrollPercent, 100)}%`;
+    });
+}
+
+// Ripple effect for buttons
+function addRippleEffect(button, event) {
+    const ripple = DOMUtils.createElement('span', 'ripple');
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+    
+    ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}px;
+        top: ${y}px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple 0.6s ease-out;
+        pointer-events: none;
+    `;
+    
+    button.style.position = 'relative';
+    button.style.overflow = 'hidden';
+    button.appendChild(ripple);
+    
+    setTimeout(() => {
+        if (ripple.parentNode) {
+            ripple.parentNode.removeChild(ripple);
+        }
+    }, 600);
+}
+
+// Add ripple animation to CSS if not exists
+function addRippleAnimation() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Initialize ripple animation
+addRippleAnimation();
+
+// Lazy loading for images
+function initializeLazyLoading() {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => {
+        imageObserver.observe(img);
+    });
+}
+
+// Initialize when page loads
+initializeLazyLoading();

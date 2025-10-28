@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 성격 유형 테스트 - 무료 심리 검사 및 분석</title>
+    <meta name="description" content="무료 MBTI 성격 유형 테스트로 당신의 진정한 성격을 발견하세요. 16가지 성격 유형별 특성, 직업 추천, 인간관계 분석을 제공합니다.">
+    <meta name="keywords" content="MBTI 테스트, 성격 유형 검사, 16가지 성격 유형, 무료 심리 테스트, 성격 분석, MBTI 궁합">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="assets/css/bootstrap-integrated.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain"></i>
+                <span>MBTI 분석</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">홈</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            테스트
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="testDropdown">
+                            <li><a class="dropdown-item" href="test.html">
+                                <i class="fas fa-play-circle me-2"></i>무료 MBTI 테스트</a></li>
+                            <li><a class="dropdown-item" href="quick-test.html">
+                                <i class="fas fa-bolt me-2"></i>빠른 성격 테스트</a></li>
+                            <li><a class="dropdown-item" href="career-test.html">
+                                <i class="fas fa-briefcase me-2"></i>직업 적성 테스트</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="typesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="typesDropdown">
+                            <li><h6 class="dropdown-header">분석가 (NT)</h6></li>
+                            <li><a class="dropdown-item" href="types/intj.html">INTJ - 건축가</a></li>
+                            <li><a class="dropdown-item" href="types/intp.html">INTP - 논리술사</a></li>
+                            <li><a class="dropdown-item" href="types/entj.html">ENTJ - 통솔자</a></li>
+                            <li><a class="dropdown-item" href="types/entp.html">ENTP - 변론가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">외교관 (NF)</h6></li>
+                            <li><a class="dropdown-item" href="types/infj.html">INFJ - 옹호자</a></li>
+                            <li><a class="dropdown-item" href="types/infp.html">INFP - 중재자</a></li>
+                            <li><a class="dropdown-item" href="types/enfj.html">ENFJ - 선도자</a></li>
+                            <li><a class="dropdown-item" href="types/enfp.html">ENFP - 활동가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="types/istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="types/isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item" href="types/estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="types/esfj.html">ESFJ - 집정관</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">탐험가 (SP)</h6></li>
+                            <li><a class="dropdown-item" href="types/istp.html">ISTP - 장인</a></li>
+                            <li><a class="dropdown-item" href="types/isfp.html">ISFP - 모험가</a></li>
+                            <li><a class="dropdown-item" href="types/estp.html">ESTP - 사업가</a></li>
+                            <li><a class="dropdown-item" href="types/esfp.html">ESFP - 연예인</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            분석 도구
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <li><a class="dropdown-item" href="compatibility.html">
+                                <i class="fas fa-heart me-2"></i>궁합 분석</a></li>
+                            <li><a class="dropdown-item" href="career-guide.html">
+                                <i class="fas fa-chart-line me-2"></i>직업 가이드</a></li>
+                            <li><a class="dropdown-item" href="relationship.html">
+                                <i class="fas fa-users me-2"></i>인간관계 분석</a></li>
+                            <li><a class="dropdown-item" href="statistics.html">
+                                <i class="fas fa-chart-bar me-2"></i>통계 및 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">MBTI란?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6 hero-content animate-fadeInLeft">
+                    <h1 class="hero-title mb-4">
+                        당신의 진정한<br>
+                        <span class="text-white">성격을 발견하세요</span>
+                    </h1>
+                    <p class="hero-subtitle mb-4">
+                        과학적이고 정확한 MBTI 성격 유형 테스트로 자신의 진정한 모습을 알아보세요.<br>
+                        16가지 성격 유형별 상세 분석과 개인 맞춤 가이드를 제공합니다.
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3">
+                        <a href="test.html" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-play-circle me-2"></i>
+                            무료 테스트 시작
+                        </a>
+                        <a href="#features" class="btn btn-outline-light btn-lg px-5">
+                            <i class="fas fa-info-circle me-2"></i>
+                            더 알아보기
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 animate-fadeInRight">
+                    <div class="text-center">
+                        <i class="fas fa-brain display-1 text-white opacity-75"></i>
+                        <div class="mt-4">
+                            <div class="d-flex justify-content-center flex-wrap gap-2">
+                                <span class="badge badge-nt fs-6 px-3 py-2">분석가</span>
+                                <span class="badge badge-nf fs-6 px-3 py-2">외교관</span>
+                                <span class="badge badge-sj fs-6 px-3 py-2">관리자</span>
+                                <span class="badge badge-sp fs-6 px-3 py-2">탐험가</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5 bg-light" id="stats">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card animate-on-scroll">
+                        <div class="stats-number" data-target="1000000">0</div>
+                        <div class="stats-label">테스트 완료</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card animate-on-scroll">
+                        <div class="stats-number" data-target="16">0</div>
+                        <div class="stats-label">성격 유형</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card animate-on-scroll">
+                        <div class="stats-number" data-target="95">0</div>
+                        <div class="stats-label">정확도 %</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card animate-on-scroll">
+                        <div class="stats-number" data-target="24">0</div>
+                        <div class="stats-label">24시간 지원</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5" id="features">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-5 fw-bold mb-3 animate-on-scroll">왜 우리의 MBTI 테스트를 선택해야 할까요?</h2>
+                    <p class="lead text-muted animate-on-scroll">과학적 근거와 전문성을 바탕으로 한 정확하고 신뢰할 수 있는 성격 분석</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 animate-on-scroll">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-chart-line fa-3x text-primary"></i>
+                            </div>
+                            <h5 class="card-title">과학적 정확성</h5>
+                            <p class="card-text text-muted">
+                                심리학 연구를 바탕으로 한 검증된 질문으로 95% 이상의 높은 정확도를 보장합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 animate-on-scroll">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-users fa-3x text-success"></i>
+                            </div>
+                            <h5 class="card-title">개인 맞춤 분석</h5>
+                            <p class="card-text text-muted">
+                                16가지 성격 유형별 상세한 특성 분석과 개인별 성장 가이드를 제공합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 animate-on-scroll">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-heart fa-3x text-danger"></i>
+                            </div>
+                            <h5 class="card-title">관계 분석</h5>
+                            <p class="card-text text-muted">
+                                다른 성격 유형과의 궁합도와 효과적인 소통 방법을 알려드립니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 animate-on-scroll">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-briefcase fa-3x text-warning"></i>
+                            </div>
+                            <h5 class="card-title">직업 가이드</h5>
+                            <p class="card-text text-muted">
+                                성격 유형에 맞는 최적의 직업과 커리어 경로를 추천해드립니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 animate-on-scroll">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-lock fa-3x text-info"></i>
+                            </div>
+                            <h5 class="card-title">개인정보 보호</h5>
+                            <p class="card-text text-muted">
+                                모든 테스트 결과는 안전하게 보호되며, 개인정보는 절대 공유되지 않습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 animate-on-scroll">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-mobile-alt fa-3x text-secondary"></i>
+                            </div>
+                            <h5 class="card-title">모바일 최적화</h5>
+                            <p class="card-text text-muted">
+                                언제 어디서나 편리하게 테스트할 수 있도록 모든 기기에 최적화되어 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MBTI Types Section -->
+    <section class="py-5 bg-light" id="types">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-5 fw-bold mb-3 animate-on-scroll">16가지 성격 유형</h2>
+                    <p class="lead text-muted animate-on-scroll">각 성격 유형의 특징을 미리 살펴보세요</p>
+                </div>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <div class="btn-group" role="group" aria-label="Type filter">
+                        <input type="radio" class="btn-check" name="typeFilter" id="all" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="all">전체</label>
+
+                        <input type="radio" class="btn-check" name="typeFilter" id="nt" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="nt">분석가 (NT)</label>
+
+                        <input type="radio" class="btn-check" name="typeFilter" id="nf" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="nf">외교관 (NF)</label>
+
+                        <input type="radio" class="btn-check" name="typeFilter" id="sj" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="sj">관리자 (SJ)</label>
+
+                        <input type="radio" class="btn-check" name="typeFilter" id="sp" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="sp">탐험가 (SP)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-4" id="typesContainer">
+                <!-- Types will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="card border-0 shadow-lg animate-on-scroll">
+                        <div class="card-body p-5">
+                            <h2 class="display-6 fw-bold mb-3">지금 바로 시작하세요!</h2>
+                            <p class="lead text-muted mb-4">
+                                3분이면 완료되는 간단한 테스트로 평생 간직할 소중한 자기 이해를 얻어보세요.
+                            </p>
+                            <a href="test.html" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-rocket me-2"></i>
+                                무료 테스트 시작하기
+                            </a>
+                            <div class="mt-4">
+                                <small class="text-muted">
+                                    <i class="fas fa-shield-alt me-1"></i>
+                                    100% 무료 • 회원가입 불필요 • 개인정보 보호
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-section">
+                            <h5><i class="fas fa-brain me-2"></i>MBTI 분석</h5>
+                            <p class="text-muted">
+                                과학적이고 정확한 MBTI 성격 유형 테스트를 통해 
+                                당신의 진정한 성격을 발견하고 더 나은 삶을 살아가세요.
+                            </p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="me-3"><i class="fab fa-facebook"></i></a>
+                                <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5>테스트</h5>
+                            <a href="test.html">MBTI 테스트</a>
+                            <a href="quick-test.html">빠른 테스트</a>
+                            <a href="career-test.html">직업 적성</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5>성격 유형</h5>
+                            <a href="types.html">16가지 유형</a>
+                            <a href="compatibility.html">궁합 분석</a>
+                            <a href="statistics.html">통계</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5>도구</h5>
+                            <a href="relationship.html">인간관계</a>
+                            <a href="career-guide.html">직업 가이드</a>
+                            <a href="about.html">MBTI란?</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5>지원</h5>
+                            <a href="faq.html">자주 묻는 질문</a>
+                            <a href="contact.html">문의하기</a>
+                            <a href="privacy.html">개인정보처리방침</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MBTI 분석. All rights reserved. | 이 사이트는 교육 목적으로 제작되었습니다.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/home.js"></script>
+    <script>
+        // 애니메이션 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 스크롤 애니메이션
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 카운터 애니메이션
+            function animateCounters() {
+                const counters = document.querySelectorAll('.stats-number');
+                
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const increment = target / 100;
+                    let current = 0;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = target.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }, 20);
+                });
+            }
+
+            // 통계 섹션이 보일 때 카운터 시작
+            const statsSection = document.getElementById('stats');
+            const statsObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            statsObserver.observe(statsSection);
+        });
+    </script>
+</body>
+</html>

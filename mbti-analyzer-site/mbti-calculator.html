@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 점수 계산기 - 내 성격 유형 점수 확인</title>
+    <meta name="description" content="MBTI 각 차원별 점수를 직접 입력하여 성격 유형을 계산하고 상세한 분석 결과를 확인하세요. 정확한 점수 기반 분석 도구.">
+    <meta name="keywords" content="MBTI 점수 계산기, 성격 유형 계산, MBTI 분석 도구, 점수 기반 분석">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="assets/css/bootstrap-integrated.css">
+    
+    <style>
+        .calculator-container {
+            background: var(--gradient-primary);
+            color: white;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+        
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--bs-border-radius-xl);
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        
+        .dimension-card {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dimension-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .dimension-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .dimension-info h5 {
+            margin-bottom: 0.25rem;
+            color: var(--bs-gray-800);
+        }
+        
+        .dimension-info small {
+            color: var(--bs-gray-600);
+        }
+        
+        .score-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-input {
+            background: var(--bs-gray-50);
+            border: 2px solid var(--bs-gray-200);
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .score-input:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: white;
+        }
+        
+        .score-input.invalid {
+            border-color: var(--bs-danger);
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .input-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--bs-gray-700);
+        }
+        
+        .result-bar {
+            background: var(--bs-gray-200);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 1rem;
+        }
+        
+        .result-fill {
+            height: 100%;
+            transition: all 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-text {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .calculation-result {
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .mbti-type {
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mbti-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .dimension-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .breakdown-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--bs-border-radius);
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .breakdown-type {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .breakdown-percentage {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .breakdown-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            background: white;
+            border: 2px solid white;
+            color: var(--bs-primary);
+            padding: 1rem;
+            border-radius: var(--bs-border-radius-lg);
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        .input-hints {
+            background: var(--bs-info);
+            color: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .preset-btn {
+            background: var(--bs-gray-100);
+            border: 1px solid var(--bs-gray-300);
+            border-radius: var(--bs-border-radius);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preset-btn:hover {
+            background: var(--bs-primary);
+            color: white;
+            border-color: var(--bs-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-container {
+                padding-top: 80px;
+            }
+            
+            .calculator-card {
+                padding: 1.5rem;
+            }
+            
+            .dimension-card {
+                padding: 1.5rem;
+            }
+            
+            .score-input-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .mbti-type {
+                font-size: 3rem;
+            }
+            
+            .dimension-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain"></i>
+                <span>MBTI 분석</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">홈</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="testDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            테스트
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="testDropdown">
+                            <li><a class="dropdown-item" href="test.html">
+                                <i class="fas fa-play-circle me-2"></i>무료 MBTI 테스트</a></li>
+                            <li><a class="dropdown-item" href="quick-personality.html">
+                                <i class="fas fa-bolt me-2"></i>빠른 성격 분석</a></li>
+                            <li><a class="dropdown-item" href="career-test.html">
+                                <i class="fas fa-briefcase me-2"></i>직업 적성 테스트</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="typesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="typesDropdown">
+                            <li><h6 class="dropdown-header">분석가 (NT)</h6></li>
+                            <li><a class="dropdown-item" href="types/intj.html">INTJ - 건축가</a></li>
+                            <li><a class="dropdown-item" href="types/intp.html">INTP - 논리술사</a></li>
+                            <li><a class="dropdown-item" href="types/entj.html">ENTJ - 통솔자</a></li>
+                            <li><a class="dropdown-item" href="types/entp.html">ENTP - 변론가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">외교관 (NF)</h6></li>
+                            <li><a class="dropdown-item" href="types/infj.html">INFJ - 옹호자</a></li>
+                            <li><a class="dropdown-item" href="types/infp.html">INFP - 중재자</a></li>
+                            <li><a class="dropdown-item" href="types/enfj.html">ENFJ - 선도자</a></li>
+                            <li><a class="dropdown-item" href="types/enfp.html">ENFP - 활동가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="types/istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="types/isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item" href="types/estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="types/esfj.html">ESFJ - 집정관</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">탐험가 (SP)</h6></li>
+                            <li><a class="dropdown-item" href="types/istp.html">ISTP - 장인</a></li>
+                            <li><a class="dropdown-item" href="types/isfp.html">ISFP - 모험가</a></li>
+                            <li><a class="dropdown-item" href="types/estp.html">ESTP - 사업가</a></li>
+                            <li><a class="dropdown-item" href="types/esfp.html">ESFP - 연예인</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="toolsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            분석 도구
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <li><a class="dropdown-item" href="type-search.html">
+                                <i class="fas fa-search me-2"></i>성격유형 검색기</a></li>
+                            <li><a class="dropdown-item active" href="mbti-calculator.html">
+                                <i class="fas fa-calculator me-2"></i>MBTI 점수 계산기</a></li>
+                            <li><a class="dropdown-item" href="compatibility.html">
+                                <i class="fas fa-heart me-2"></i>궁합 분석</a></li>
+                            <li><a class="dropdown-item" href="career-guide.html">
+                                <i class="fas fa-chart-line me-2"></i>직업 가이드</a></li>
+                            <li><a class="dropdown-item" href="relationship.html">
+                                <i class="fas fa-users me-2"></i>인간관계 분석</a></li>
+                            <li><a class="dropdown-item" href="statistics.html">
+                                <i class="fas fa-chart-bar me-2"></i>통계 및 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">MBTI란?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="calculator-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <!-- Header -->
+                    <div class="calculator-card text-center">
+                        <h1 class="h2 mb-3 text-dark">
+                            <i class="fas fa-calculator me-2 text-primary"></i>
+                            MBTI 점수 계산기
+                        </h1>
+                        <p class="text-muted mb-4">
+                            MBTI 각 차원별 점수를 입력하여 정확한 성격 유형을 계산하고<br>
+                            상세한 분석 결과를 확인해보세요.
+                        </p>
+                    </div>
+
+                    <!-- Input Hints -->
+                    <div class="input-hints">
+                        <h6 class="mb-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            점수 입력 가이드
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <small>
+                                    <strong>점수 범위:</strong> 각 항목당 0-100점<br>
+                                    <strong>총합:</strong> 좌우 점수 합이 100이 되도록 입력
+                                </small>
+                            </div>
+                            <div class="col-md-6">
+                                <small>
+                                    <strong>예시:</strong> E 60점, I 40점<br>
+                                    <strong>의미:</strong> 외향형 60%, 내향형 40%
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Form -->
+                    <div class="row g-4">
+                        <!-- E/I Dimension -->
+                        <div class="col-lg-6">
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-icon" style="background: var(--gradient-primary);">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="dimension-info">
+                                        <h5>에너지 방향</h5>
+                                        <small>외향형(E) vs 내향형(I)</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="preset-buttons">
+                                    <button class="preset-btn" data-dimension="EI" data-left="70" data-right="30">강한 E</button>
+                                    <button class="preset-btn" data-dimension="EI" data-left="60" data-right="40">중간 E</button>
+                                    <button class="preset-btn" data-dimension="EI" data-left="50" data-right="50">균형</button>
+                                    <button class="preset-btn" data-dimension="EI" data-left="40" data-right="60">중간 I</button>
+                                    <button class="preset-btn" data-dimension="EI" data-left="30" data-right="70">강한 I</button>
+                                </div>
+                                
+                                <div class="score-input-group">
+                                    <div>
+                                        <div class="input-label">외향형 (E)</div>
+                                        <input type="number" class="form-control score-input" id="scoreE" 
+                                               min="0" max="100" value="50" data-pair="scoreI">
+                                    </div>
+                                    <div>
+                                        <div class="input-label">내향형 (I)</div>
+                                        <input type="number" class="form-control score-input" id="scoreI" 
+                                               min="0" max="100" value="50" data-pair="scoreE">
+                                    </div>
+                                </div>
+                                
+                                <div class="result-bar">
+                                    <div class="result-fill" id="resultEI" style="width: 50%; background: var(--gradient-primary);">
+                                        균형
+                                    </div>
+                                </div>
+                                <div class="result-text text-center" id="resultTextEI">
+                                    외향형과 내향형이 균형을 이루고 있습니다.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- S/N Dimension -->
+                        <div class="col-lg-6">
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-icon" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <div class="dimension-info">
+                                        <h5>인식 기능</h5>
+                                        <small>감각형(S) vs 직관형(N)</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="preset-buttons">
+                                    <button class="preset-btn" data-dimension="SN" data-left="70" data-right="30">강한 S</button>
+                                    <button class="preset-btn" data-dimension="SN" data-left="60" data-right="40">중간 S</button>
+                                    <button class="preset-btn" data-dimension="SN" data-left="50" data-right="50">균형</button>
+                                    <button class="preset-btn" data-dimension="SN" data-left="40" data-right="60">중간 N</button>
+                                    <button class="preset-btn" data-dimension="SN" data-left="30" data-right="70">강한 N</button>
+                                </div>
+                                
+                                <div class="score-input-group">
+                                    <div>
+                                        <div class="input-label">감각형 (S)</div>
+                                        <input type="number" class="form-control score-input" id="scoreS" 
+                                               min="0" max="100" value="50" data-pair="scoreN">
+                                    </div>
+                                    <div>
+                                        <div class="input-label">직관형 (N)</div>
+                                        <input type="number" class="form-control score-input" id="scoreN" 
+                                               min="0" max="100" value="50" data-pair="scoreS">
+                                    </div>
+                                </div>
+                                
+                                <div class="result-bar">
+                                    <div class="result-fill" id="resultSN" style="width: 50%; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                                        균형
+                                    </div>
+                                </div>
+                                <div class="result-text text-center" id="resultTextSN">
+                                    감각형과 직관형이 균형을 이루고 있습니다.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- T/F Dimension -->
+                        <div class="col-lg-6">
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-icon" style="background: linear-gradient(135deg, #96fbc4 0%, #f9f047 100%);">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="dimension-info">
+                                        <h5>판단 기능</h5>
+                                        <small>사고형(T) vs 감정형(F)</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="preset-buttons">
+                                    <button class="preset-btn" data-dimension="TF" data-left="70" data-right="30">강한 T</button>
+                                    <button class="preset-btn" data-dimension="TF" data-left="60" data-right="40">중간 T</button>
+                                    <button class="preset-btn" data-dimension="TF" data-left="50" data-right="50">균형</button>
+                                    <button class="preset-btn" data-dimension="TF" data-left="40" data-right="60">중간 F</button>
+                                    <button class="preset-btn" data-dimension="TF" data-left="30" data-right="70">강한 F</button>
+                                </div>
+                                
+                                <div class="score-input-group">
+                                    <div>
+                                        <div class="input-label">사고형 (T)</div>
+                                        <input type="number" class="form-control score-input" id="scoreT" 
+                                               min="0" max="100" value="50" data-pair="scoreF">
+                                    </div>
+                                    <div>
+                                        <div class="input-label">감정형 (F)</div>
+                                        <input type="number" class="form-control score-input" id="scoreF" 
+                                               min="0" max="100" value="50" data-pair="scoreT">
+                                    </div>
+                                </div>
+                                
+                                <div class="result-bar">
+                                    <div class="result-fill" id="resultTF" style="width: 50%; background: linear-gradient(135deg, #96fbc4 0%, #f9f047 100%);">
+                                        균형
+                                    </div>
+                                </div>
+                                <div class="result-text text-center" id="resultTextTF">
+                                    사고형과 감정형이 균형을 이루고 있습니다.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- J/P Dimension -->
+                        <div class="col-lg-6">
+                            <div class="dimension-card">
+                                <div class="dimension-header">
+                                    <div class="dimension-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="dimension-info">
+                                        <h5>생활 양식</h5>
+                                        <small>판단형(J) vs 인식형(P)</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="preset-buttons">
+                                    <button class="preset-btn" data-dimension="JP" data-left="70" data-right="30">강한 J</button>
+                                    <button class="preset-btn" data-dimension="JP" data-left="60" data-right="40">중간 J</button>
+                                    <button class="preset-btn" data-dimension="JP" data-left="50" data-right="50">균형</button>
+                                    <button class="preset-btn" data-dimension="JP" data-left="40" data-right="60">중간 P</button>
+                                    <button class="preset-btn" data-dimension="JP" data-left="30" data-right="70">강한 P</button>
+                                </div>
+                                
+                                <div class="score-input-group">
+                                    <div>
+                                        <div class="input-label">판단형 (J)</div>
+                                        <input type="number" class="form-control score-input" id="scoreJ" 
+                                               min="0" max="100" value="50" data-pair="scoreP">
+                                    </div>
+                                    <div>
+                                        <div class="input-label">인식형 (P)</div>
+                                        <input type="number" class="form-control score-input" id="scoreP" 
+                                               min="0" max="100" value="50" data-pair="scoreJ">
+                                    </div>
+                                </div>
+                                
+                                <div class="result-bar">
+                                    <div class="result-fill" id="resultJP" style="width: 50%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                                        균형
+                                    </div>
+                                </div>
+                                <div class="result-text text-center" id="resultTextJP">
+                                    판단형과 인식형이 균형을 이루고 있습니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculation Result -->
+                    <div class="calculation-result" id="calculationResult">
+                        <div class="mbti-type" id="calculatedType">ENFP</div>
+                        <div class="mbti-name" id="calculatedName">활동가</div>
+                        
+                        <div class="dimension-breakdown" id="dimensionBreakdown">
+                            <div class="breakdown-item">
+                                <div class="breakdown-type">E</div>
+                                <div class="breakdown-percentage">50%</div>
+                                <div class="breakdown-label">외향형</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-type">N</div>
+                                <div class="breakdown-percentage">50%</div>
+                                <div class="breakdown-label">직관형</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-type">F</div>
+                                <div class="breakdown-percentage">50%</div>
+                                <div class="breakdown-label">감정형</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-type">P</div>
+                                <div class="breakdown-percentage">50%</div>
+                                <div class="breakdown-label">인식형</div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <a href="#" class="action-btn" id="viewTypeDetail">
+                                <i class="fas fa-info-circle me-2"></i>
+                                유형 상세 보기
+                            </a>
+                            <a href="test.html" class="action-btn">
+                                <i class="fas fa-clipboard-check me-2"></i>
+                                정식 테스트 받기
+                            </a>
+                            <a href="#" class="action-btn" id="shareCalculation">
+                                <i class="fas fa-share me-2"></i>
+                                결과 공유하기
+                            </a>
+                            <a href="#" class="action-btn" id="resetCalculator">
+                                <i class="fas fa-redo me-2"></i>
+                                다시 계산하기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/mbti-calculator.js"></script>
+</body>
+</html>

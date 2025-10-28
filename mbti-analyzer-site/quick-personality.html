@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빠른 성격 분석 - 1분 MBTI 체크</title>
+    <meta name="description" content="1분만에 완료하는 간단한 성격 분석으로 당신의 MBTI 성향을 빠르게 확인해보세요. 8가지 질문으로 성격 유형을 파악합니다.">
+    <meta name="keywords" content="빠른 성격 분석, 1분 MBTI, 간단한 성격 테스트, 성격 체크">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="assets/css/bootstrap-integrated.css">
+    
+    <style>
+        .quick-test-container {
+            background: var(--gradient-primary);
+            color: white;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--bs-border-radius-xl);
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .question-number {
+            background: var(--gradient-primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--bs-gray-800);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .answer-choice {
+            background: var(--bs-gray-50);
+            border: 2px solid var(--bs-gray-200);
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        
+        .answer-choice:hover {
+            border-color: var(--bs-primary);
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .answer-choice.selected {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.02);
+        }
+        
+        .answer-choice input[type="radio"] {
+            display: none;
+        }
+        
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .progress {
+            background: transparent;
+            height: 8px;
+        }
+        
+        .progress-bar {
+            background: white;
+            border-radius: 50px;
+            transition: width 0.4s ease;
+        }
+        
+        .result-container {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .result-type {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .result-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--bs-gray-700);
+        }
+        
+        .dimension-score {
+            background: white;
+            border-radius: var(--bs-border-radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dimension-label {
+            display: flex;
+            justify-content: between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .dimension-bar {
+            background: var(--bs-gray-200);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .dimension-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+            position: relative;
+        }
+        
+        .dimension-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            background: white;
+            border: 2px solid var(--bs-primary);
+            color: var(--bs-primary);
+            padding: 1rem;
+            border-radius: var(--bs-border-radius-lg);
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: var(--bs-primary);
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+        
+        .floating-timer {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            font-weight: 600;
+            color: var(--bs-gray-800);
+            z-index: 1000;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .quick-test-container {
+                padding-top: 80px;
+            }
+            
+            .test-card {
+                padding: 1.5rem;
+            }
+            
+            .question-card {
+                padding: 1.5rem;
+            }
+            
+            .floating-timer {
+                position: static;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-brain"></i>
+                <span>MBTI 분석</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">홈</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="testDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            테스트
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="testDropdown">
+                            <li><a class="dropdown-item" href="test.html">
+                                <i class="fas fa-play-circle me-2"></i>무료 MBTI 테스트</a></li>
+                            <li><a class="dropdown-item active" href="quick-personality.html">
+                                <i class="fas fa-bolt me-2"></i>빠른 성격 분석</a></li>
+                            <li><a class="dropdown-item" href="career-test.html">
+                                <i class="fas fa-briefcase me-2"></i>직업 적성 테스트</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="typesDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg" aria-labelledby="typesDropdown">
+                            <li><h6 class="dropdown-header">분석가 (NT)</h6></li>
+                            <li><a class="dropdown-item" href="types/intj.html">INTJ - 건축가</a></li>
+                            <li><a class="dropdown-item" href="types/intp.html">INTP - 논리술사</a></li>
+                            <li><a class="dropdown-item" href="types/entj.html">ENTJ - 통솔자</a></li>
+                            <li><a class="dropdown-item" href="types/entp.html">ENTP - 변론가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">외교관 (NF)</h6></li>
+                            <li><a class="dropdown-item" href="types/infj.html">INFJ - 옹호자</a></li>
+                            <li><a class="dropdown-item" href="types/infp.html">INFP - 중재자</a></li>
+                            <li><a class="dropdown-item" href="types/enfj.html">ENFJ - 선도자</a></li>
+                            <li><a class="dropdown-item" href="types/enfp.html">ENFP - 활동가</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="types/istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="types/isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item" href="types/estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="types/esfj.html">ESFJ - 집정관</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">탐험가 (SP)</h6></li>
+                            <li><a class="dropdown-item" href="types/istp.html">ISTP - 장인</a></li>
+                            <li><a class="dropdown-item" href="types/isfp.html">ISFP - 모험가</a></li>
+                            <li><a class="dropdown-item" href="types/estp.html">ESTP - 사업가</a></li>
+                            <li><a class="dropdown-item" href="types/esfp.html">ESFP - 연예인</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            분석 도구
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                            <li><a class="dropdown-item" href="type-search.html">
+                                <i class="fas fa-search me-2"></i>성격유형 검색기</a></li>
+                            <li><a class="dropdown-item" href="compatibility.html">
+                                <i class="fas fa-heart me-2"></i>궁합 분석</a></li>
+                            <li><a class="dropdown-item" href="career-guide.html">
+                                <i class="fas fa-chart-line me-2"></i>직업 가이드</a></li>
+                            <li><a class="dropdown-item" href="relationship.html">
+                                <i class="fas fa-users me-2"></i>인간관계 분석</a></li>
+                            <li><a class="dropdown-item" href="statistics.html">
+                                <i class="fas fa-chart-bar me-2"></i>통계 및 분석</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">MBTI란?</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Floating Timer -->
+    <div class="floating-timer" id="timer">
+        <i class="fas fa-clock me-1"></i>
+        <span id="timeDisplay">00:00</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="quick-test-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Introduction -->
+                    <div class="test-card text-center" id="introCard">
+                        <h1 class="h2 mb-3 text-dark">
+                            <i class="fas fa-bolt me-2 text-warning"></i>
+                            빠른 성격 분석
+                        </h1>
+                        <p class="text-muted mb-4">
+                            단 1분만에 완료하는 간단한 성격 분석으로<br>
+                            당신의 MBTI 성향을 빠르게 확인해보세요!
+                        </p>
+                        
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-3 col-6">
+                                <div class="text-center">
+                                    <i class="fas fa-clock text-primary fs-2 mb-2"></i>
+                                    <h6 class="text-dark mb-1">소요 시간</h6>
+                                    <small class="text-muted">약 1분</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="text-center">
+                                    <i class="fas fa-list text-success fs-2 mb-2"></i>
+                                    <h6 class="text-dark mb-1">질문 수</h6>
+                                    <small class="text-muted">8문항</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="text-center">
+                                    <i class="fas fa-chart-bar text-warning fs-2 mb-2"></i>
+                                    <h6 class="text-dark mb-1">정확도</h6>
+                                    <small class="text-muted">85% 이상</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="text-center">
+                                    <i class="fas fa-mobile-alt text-info fs-2 mb-2"></i>
+                                    <h6 class="text-dark mb-1">플랫폼</h6>
+                                    <small class="text-muted">모든 기기</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-lg px-5" id="startQuickTest">
+                            <i class="fas fa-play me-2"></i>
+                            지금 시작하기
+                        </button>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-container d-none" id="progressContainer">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">진행률</span>
+                            <span id="progressText">0/8</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Container -->
+                    <div id="questionsContainer" class="d-none">
+                        <!-- 질문들이 동적으로 생성됩니다 -->
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="d-none" id="navigationButtons">
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-light" id="prevBtn" disabled>
+                                <i class="fas fa-chevron-left me-2"></i>이전
+                            </button>
+                            <button class="btn btn-light" id="nextBtn" disabled>
+                                다음<i class="fas fa-chevron-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="result-container" id="resultContainer">
+                        <div class="test-card text-center">
+                            <h2 class="h3 mb-4 text-dark">분석 결과</h2>
+                            
+                            <div class="result-type" id="resultType">INFP</div>
+                            <div class="result-name" id="resultName">중재자</div>
+                            
+                            <div class="row g-3 mb-4" id="dimensionScores">
+                                <!-- 차원별 점수가 동적으로 생성됩니다 -->
+                            </div>
+                            
+                            <div class="alert alert-info text-start" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>참고:</strong> 이는 간단한 분석 결과입니다. 
+                                더 정확한 결과를 원하시면 <a href="test.html" class="alert-link">정식 테스트</a>를 받아보세요.
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <a href="test.html" class="action-btn">
+                                    <i class="fas fa-clipboard-check me-2"></i>
+                                    정식 테스트 받기
+                                </a>
+                                <a href="#" class="action-btn" id="shareResult">
+                                    <i class="fas fa-share me-2"></i>
+                                    결과 공유하기
+                                </a>
+                                <a href="type-search.html" class="action-btn">
+                                    <i class="fas fa-search me-2"></i>
+                                    다른 유형 알아보기
+                                </a>
+                                <a href="#" class="action-btn" id="retakeTest">
+                                    <i class="fas fa-redo me-2"></i>
+                                    다시 테스트하기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/quick-personality.js"></script>
+</body>
+</html>

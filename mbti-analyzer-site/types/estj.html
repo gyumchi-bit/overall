@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESTJ - 경영자 | MBTI 성격 유형 분석</title>
+    <meta name="description" content="ESTJ 경영자 유형의 특성, 장단점, 적합한 직업, 인간관계 분석을 상세히 알아보세요.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap-integrated.css">
+    
+    <style>
+        .type-header {
+            background: linear-gradient(135deg, #2E5266 0%, #4A6F7A 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        .type-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        .characteristic-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        .characteristic-card:hover {
+            transform: translateY(-5px);
+        }
+        .strength-card {
+            border-left: 4px solid #28a745;
+        }
+        .weakness-card {
+            border-left: 4px solid #dc3545;
+        }
+        .career-card {
+            border-left: 4px solid #007bff;
+        }
+        .relationship-card {
+            border-left: 4px solid #fd7e14;
+        }
+        .type-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        .progress-custom {
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #2E5266;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E5266;">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-brain me-2"></i>MBTI 분석
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">홈</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../test.html">테스트</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            성격 유형
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><h6 class="dropdown-header">관리자 (SJ)</h6></li>
+                            <li><a class="dropdown-item" href="istj.html">ISTJ - 현실주의자</a></li>
+                            <li><a class="dropdown-item" href="isfj.html">ISFJ - 수호자</a></li>
+                            <li><a class="dropdown-item active" href="estj.html">ESTJ - 경영자</a></li>
+                            <li><a class="dropdown-item" href="esfj.html">ESFJ - 집정관</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../relationship.html">궁합 분석</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Type Header -->
+    <section class="type-header">
+        <div class="container">
+            <div class="type-badge">
+                <i class="fas fa-crown me-2"></i>관리자 (SJ)
+            </div>
+            <h1 class="display-4 fw-bold mb-3">ESTJ</h1>
+            <h2 class="h3 mb-3">경영자 (The Executive)</h2>
+            <p class="lead">체계적이고 실용적인 리더, 전통과 질서를 중시하는 조직의 중심</p>
+            <div class="type-icon">
+                <i class="fas fa-chess-king"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+                <!-- Navigation Tabs -->
+                <ul class="nav nav-pills mb-4" id="typeTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="pill" data-bs-target="#overview" type="button" role="tab">개요</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="characteristics-tab" data-bs-toggle="pill" data-bs-target="#characteristics" type="button" role="tab">특성</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="career-tab" data-bs-toggle="pill" data-bs-target="#career" type="button" role="tab">직업</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="relationship-tab" data-bs-toggle="pill" data-bs-target="#relationship" type="button" role="tab">인간관계</button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="typeTabContent">
+                    <!-- Overview Tab -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                        <div class="card characteristic-card">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <i class="fas fa-user-tie me-2"></i>ESTJ 경영자란?
+                                </h3>
+                                <p class="card-text">
+                                    ESTJ는 체계적이고 실용적인 성격으로, 조직과 사회의 질서를 중시하는 타고난 리더입니다. 
+                                    전체 인구의 약 8-12%를 차지하며, 특히 경영진과 관리직에서 많이 발견됩니다.
+                                </p>
+                                
+                                <h5 class="mt-4">핵심 특징</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check text-success me-2"></i>강한 책임감과 의무감</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>체계적이고 논리적인 사고</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>전통과 규칙을 중시</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check text-success me-2"></i>뛰어난 조직 관리 능력</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>목표 지향적이고 효율적</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>결정력과 실행력이 뛰어남</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cognitive Functions -->
+                        <div class="card characteristic-card">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <i class="fas fa-brain me-2"></i>인지 기능
+                                </h3>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <h6>주기능: 외향 사고 (Te)</h6>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar bg-primary" style="width: 90%"></div>
+                                        </div>
+                                        <small class="text-muted">체계적이고 효율적인 논리적 사고</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h6>부기능: 내향 감각 (Si)</h6>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar bg-info" style="width: 75%"></div>
+                                        </div>
+                                        <small class="text-muted">과거 경험과 전통을 중시</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h6>3차기능: 외향 직관 (Ne)</h6>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar bg-warning" style="width: 40%"></div>
+                                        </div>
+                                        <small class="text-muted">새로운 가능성 탐색</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h6>열등기능: 내향 감정 (Fi)</h6>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar bg-secondary" style="width: 25%"></div>
+                                        </div>
+                                        <small class="text-muted">개인적 가치와 감정</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Characteristics Tab -->
+                    <div class="tab-pane fade" id="characteristics" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card characteristic-card strength-card">
+                                    <div class="card-body">
+                                        <h4 class="card-title text-success">
+                                            <i class="fas fa-thumbs-up me-2"></i>강점
+                                        </h4>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>뛰어난 리더십과 관리 능력</li>
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>체계적이고 조직적인 사고</li>
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>강한 책임감과 의무감</li>
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>실용적이고 현실적인 판단</li>
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>목표 달성을 위한 강한 추진력</li>
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>효율성과 생산성 추구</li>
+                                            <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>신뢰할 수 있고 안정적</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card characteristic-card weakness-card">
+                                    <div class="card-body">
+                                        <h4 class="card-title text-danger">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>약점 & 개선점
+                                        </h4>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>변화에 대한 저항감</li>
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>과도한 통제욕구</li>
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>타인의 감정에 둔감할 수 있음</li>
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>융통성 부족</li>
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>비판에 민감한 반응</li>
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>스트레스 시 고집이 세짐</li>
+                                            <li class="mb-2"><i class="fas fa-minus-circle text-danger me-2"></i>창의적 아이디어 수용 어려움</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Growth Tips -->
+                        <div class="card characteristic-card">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <i class="fas fa-seedling me-2"></i>성장을 위한 조언
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-heart text-danger me-2"></i>감정적 지능 개발</h6>
+                                        <p class="small">타인의 감정과 관점을 이해하려 노력하고, 공감 능력을 기르세요.</p>
+                                        
+                                        <h6><i class="fas fa-lightbulb text-warning me-2"></i>창의성 수용</h6>
+                                        <p class="small">새로운 아이디어와 접근법에 열린 마음을 가져보세요.</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-balance-scale text-info me-2"></i>유연성 증진</h6>
+                                        <p class="small">상황에 따라 융통성 있게 대처하는 능력을 기르세요.</p>
+                                        
+                                        <h6><i class="fas fa-pause text-secondary me-2"></i>여유 갖기</h6>
+                                        <p class="small">때로는 완벽함보다는 적당한 선에서 만족하는 것도 필요합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Career Tab -->
+                    <div class="tab-pane fade" id="career" role="tabpanel">
+                        <div class="card characteristic-card career-card">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <i class="fas fa-briefcase me-2"></i>추천 직업
+                                </h3>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>경영 및 관리</h5>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>최고경영자 (CEO)</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>부서장/팀장</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>프로젝트 매니저</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>운영 관리자</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>품질관리 매니저</li>
+                                        </ul>
+                                        
+                                        <h5>금융 및 비즈니스</h5>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>은행장/지점장</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>재무 관리자</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>회계사</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>경영 컨설턴트</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>법률 및 공공 서비스</h5>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>판사</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>변호사</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>공무원 (고위직)</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>정치인</li>
+                                        </ul>
+                                        
+                                        <h5>교육 및 기타</h5>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>학교 교장/교감</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>군 장교</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>부동산 개발업자</li>
+                                            <li><i class="fas fa-caret-right text-primary me-2"></i>보험 에이전트</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Work Environment -->
+                        <div class="card characteristic-card">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <i class="fas fa-building me-2"></i>이상적인 업무 환경
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>명확한 구조와 체계가 있는 조직</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>성과와 효율성을 중시하는 문화</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>안정적이고 예측 가능한 환경</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>리더십을 발휘할 수 있는 위치</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>전통적인 가치를 존중하는 조직</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>명확한 승진 경로가 있는 회사</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Relationship Tab -->
+                    <div class="tab-pane fade" id="relationship" role="tabpanel">
+                        <div class="card characteristic-card relationship-card">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <i class="fas fa-heart me-2"></i>인간관계 특성
+                                </h3>
+                                
+                                <h5>연애/결혼 관계에서</h5>
+                                <ul class="list-unstyled mb-4">
+                                    <li><i class="fas fa-plus text-success me-2"></i>안정적이고 신뢰할 수 있는 파트너</li>
+                                    <li><i class="fas fa-plus text-success me-2"></i>가족을 위한 강한 책임감</li>
+                                    <li><i class="fas fa-plus text-success me-2"></i>전통적인 가치와 역할을 중시</li>
+                                    <li><i class="fas fa-exclamation text-warning me-2"></i>감정 표현에 어려움을 겪을 수 있음</li>
+                                    <li><i class="fas fa-exclamation text-warning me-2"></i>파트너의 자율성을 제한할 수 있음</li>
+                                </ul>
+                                
+                                <h5>친구 관계에서</h5>
+                                <ul class="list-unstyled mb-4">
+                                    <li><i class="fas fa-plus text-success me-2"></i>충성스럽고 의리 있는 친구</li>
+                                    <li><i class="fas fa-plus text-success me-2"></i>실질적인 도움을 주려고 노력</li>
+                                    <li><i class="fas fa-plus text-success me-2"></i>모임을 주도하고 계획을 세움</li>
+                                    <li><i class="fas fa-exclamation text-warning me-2"></i>너무 간섭적일 수 있음</li>
+                                </ul>
+                                
+                                <h5>직장 동료로서</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-plus text-success me-2"></i>팀을 이끌고 목표를 달성하는 능력</li>
+                                    <li><i class="fas fa-plus text-success me-2"></i>업무에 대한 높은 책임감</li>
+                                    <li><i class="fas fa-plus text-success me-2"></i>효율적인 업무 처리</li>
+                                    <li><i class="fas fa-exclamation text-warning me-2"></i>완벽주의 성향으로 인한 스트레스</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Compatibility -->
+                        <div class="card characteristic-card">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <i class="fas fa-users me-2"></i>타입별 궁합
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6 class="text-success">최고 궁합</h6>
+                                        <span class="badge bg-success me-1">INFP</span>
+                                        <span class="badge bg-success me-1">ISFP</span>
+                                        <p class="small mt-2">감정적 깊이를 제공하며 ESTJ의 딱딱함을 부드럽게 만들어줍니다.</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-warning">좋은 궁합</h6>
+                                        <span class="badge bg-warning me-1">ISTJ</span>
+                                        <span class="badge bg-warning me-1">ESFJ</span>
+                                        <span class="badge bg-warning me-1">ENTJ</span>
+                                        <p class="small mt-2">비슷한 가치관과 목표 지향적 성격으로 안정적인 관계를 형성합니다.</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="text-danger">주의 필요</h6>
+                                        <span class="badge bg-danger me-1">ENFP</span>
+                                        <span class="badge bg-danger me-1">ENTP</span>
+                                        <p class="small mt-2">자유로운 성격과 변화 추구 성향이 갈등을 일으킬 수 있습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+                <!-- Type Summary -->
+                <div class="card characteristic-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">ESTJ 한눈에 보기</h5>
+                        <div class="mb-3">
+                            <i class="fas fa-chess-king" style="font-size: 3rem; color: #2E5266;"></i>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <h6 class="text-muted">별명</h6>
+                                <span class="fw-bold">경영자</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6 class="text-muted">빈도</h6>
+                                <span class="fw-bold">8-12%</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6 class="text-muted">그룹</h6>
+                                <span class="fw-bold">관리자 (SJ)</span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6 class="text-muted">성향</h6>
+                                <span class="fw-bold">외향적</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card characteristic-card">
+                    <div class="card-body">
+                        <h5 class="card-title">관련 도구</h5>
+                        <div class="d-grid gap-2">
+                            <a href="../test.html" class="btn btn-primary">
+                                <i class="fas fa-clipboard-check me-2"></i>MBTI 테스트
+                            </a>
+                            <a href="../type-comparison.html" class="btn btn-outline-primary">
+                                <i class="fas fa-balance-scale me-2"></i>유형 비교
+                            </a>
+                            <a href="../relationship.html" class="btn btn-outline-primary">
+                                <i class="fas fa-heart me-2"></i>궁합 분석
+                            </a>
+                            <a href="../mbti-calculator.html" class="btn btn-outline-primary">
+                                <i class="fas fa-calculator me-2"></i>점수 계산기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Types -->
+                <div class="card characteristic-card">
+                    <div class="card-body">
+                        <h5 class="card-title">관련 유형</h5>
+                        <div class="row">
+                            <div class="col-6 mb-2">
+                                <a href="istj.html" class="btn btn-sm btn-outline-secondary w-100">ISTJ</a>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <a href="isfj.html" class="btn btn-sm btn-outline-secondary w-100">ISFJ</a>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <a href="esfj.html" class="btn btn-sm btn-outline-secondary w-100">ESFJ</a>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <a href="entj.html" class="btn btn-sm btn-outline-secondary w-100">ENTJ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-brain me-2"></i>MBTI 분석</h5>
+                    <p class="mb-0">과학적이고 정확한 성격 분석으로 더 나은 나를 발견하세요</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="../index.html" class="text-light text-decoration-none me-3">홈</a>
+                    <a href="../test.html" class="text-light text-decoration-none me-3">테스트</a>
+                    <a href="../about.html" class="text-light text-decoration-none">MBTI란?</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

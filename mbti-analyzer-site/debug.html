@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테스트 결과 생성기</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #45769E 0%, #288990 50%, #75C9E3 100%);
+            color: white;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        button { 
+            background: #FFB629; 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px;
+            margin: 10px;
+        }
+        button:hover { background: #e6a425; }
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 MBTI 테스트 결과 생성기</h1>
+        <p>결과 페이지를 테스트하기 위한 도구입니다.</p>
+        
+        <label for="mbtiType">MBTI 타입 선택:</label>
+        <select id="mbtiType">
+            <option value="INTJ">INTJ - 건축가</option>
+            <option value="INTP">INTP - 논리술사</option>
+            <option value="ENTJ">ENTJ - 통솔자</option>
+            <option value="ENTP">ENTP - 변론가</option>
+            <option value="INFJ">INFJ - 옹호자</option>
+            <option value="INFP">INFP - 중재자</option>
+            <option value="ENFJ">ENFJ - 선도자</option>
+            <option value="ENFP">ENFP - 활동가</option>
+            <option value="ISTJ">ISTJ - 현실주의자</option>
+            <option value="ISFJ">ISFJ - 수호자</option>
+            <option value="ESTJ">ESTJ - 경영자</option>
+            <option value="ESFJ">ESFJ - 집정관</option>
+            <option value="ISTP">ISTP - 만능재주꾼</option>
+            <option value="ISFP">ISFP - 모험가</option>
+            <option value="ESTP">ESTP - 사업가</option>
+            <option value="ESFP">ESFP - 연예인</option>
+        </select>
+        
+        <br><br>
+        
+        <button onclick="generateResult()">결과 생성 및 저장</button>
+        <button onclick="goToResult()">결과 페이지로 이동</button>
+        <button onclick="clearResult()">저장된 결과 삭제</button>
+        
+        <div id="status" style="margin-top: 20px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 5px;"></div>
+    </div>
+
+    <script>
+        function generateResult() {
+            const selectedType = document.getElementById('mbtiType').value;
+            
+            // Mock result 생성
+            const result = {
+                type: selectedType,
+                scores: { E: 12, I: 4, S: 8, N: 8, T: 10, F: 6, J: 9, P: 7 },
+                percentages: {
+                    EI: { E: 75, I: 25 },
+                    SN: { S: 50, N: 50 },
+                    TF: { T: 63, F: 37 },
+                    JP: { J: 56, P: 44 }
+                },
+                certainty: 78,
+                dominantDimensions: ['E', 'T'],
+                timestamp: new Date().toISOString()
+            };
+            
+            // localStorage에 저장
+            localStorage.setItem('mbti_test_result', JSON.stringify(result));
+            
+            document.getElementById('status').innerHTML = `
+                <strong>✅ 결과 생성 완료!</strong><br>
+                타입: ${selectedType}<br>
+                정확도: ${result.certainty}%<br>
+                생성 시간: ${new Date().toLocaleString()}
+            `;
+        }
+        
+        function goToResult() {
+            window.location.href = 'result.html';
+        }
+        
+        function clearResult() {
+            localStorage.removeItem('mbti_test_result');
+            localStorage.removeItem('mbti_test_progress');
+            document.getElementById('status').innerHTML = '<strong>🗑️ 저장된 결과가 삭제되었습니다.</strong>';
+        }
+        
+        // 페이지 로드 시 현재 저장된 결과 확인
+        window.onload = function() {
+            const saved = localStorage.getItem('mbti_test_result');
+            if (saved) {
+                const result = JSON.parse(saved);
+                document.getElementById('status').innerHTML = `
+                    <strong>💾 저장된 결과 있음:</strong><br>
+                    타입: ${result.type}<br>
+                    정확도: ${result.certainty}%
+                `;
+            } else {
+                document.getElementById('status').innerHTML = '<strong>📭 저장된 결과가 없습니다.</strong>';
+            }
+        }
+    </script>
+</body>
+</html>

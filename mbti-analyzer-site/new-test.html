@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 검사 - 16문항</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            background: linear-gradient(135deg, #45769E 0%, #288990 50%, #75C9E3 100%);
+            color: white; 
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .progress-section {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #FFB629, #A5C5C2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        .progress-text {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .question-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .question-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        .option {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        .option:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: #FFB629;
+            transform: translateY(-2px);
+        }
+        .option.selected {
+            background: #FFB629;
+            color: #333;
+            border-color: #FFB629;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .btn {
+            background: #FFB629;
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn:hover { 
+            background: #e6a425; 
+            transform: translateY(-2px);
+        }
+        .btn:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+        .btn-secondary {
+            background: #288990;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #1f6b73;
+        }
+        .answer-summary {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .answer-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .answer-item.answered {
+            background: #A5C5C2;
+            color: #333;
+        }
+        .result-section {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .result-type {
+            font-size: 4em;
+            color: #FFB629;
+            margin: 20px 0;
+        }
+        .result-name {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        .result-desc {
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 MBTI 성격검사 (16문항)</h1>
+            <p>각 질문에 가장 솔직하게 답변해주세요</p>
+        </div>
+
+        <div id="test-section">
+            <!-- 진행률 표시 -->
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">문항 1 / 16</div>
+                
+                <!-- 답변 현황 표시 -->
+                <div class="answer-summary">
+                    <div style="margin-bottom: 10px; font-weight: bold;">답변 현황:</div>
+                    <div id="answerStatus"></div>
+                </div>
+            </div>
+
+            <!-- 질문 카드 -->
+            <div class="question-card">
+                <div class="question-title" id="questionText">
+                    질문이 로딩중입니다...
+                </div>
+                <div class="options" id="optionsContainer">
+                    <!-- 옵션들이 여기에 동적으로 추가됩니다 -->
+                </div>
+            </div>
+
+            <!-- 네비게이션 -->
+            <div class="navigation">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+                    ← 이전
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>
+                        다음 →
+                    </button>
+                    <button class="btn" id="finishBtn" onclick="finishTest()" style="display: none;">
+                        결과 보기 🎯
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 결과 섹션 -->
+        <div id="result-section" class="result-section">
+            <div class="result-type" id="resultType">INTJ</div>
+            <div class="result-name" id="resultName">건축가</div>
+            <div class="result-desc" id="resultDesc">당신의 성격 분석 결과입니다.</div>
+            <div style="margin-top: 30px;">
+                <button class="btn" onclick="restartTest()">다시 테스트</button>
+                <button class="btn btn-secondary" onclick="goToMain()">메인으로</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MBTI 질문 데이터 (16문항)
+        const questions = [
+            {
+                text: "파티에서 당신은 주로 어떻게 행동하나요?",
+                options: [
+                    { text: "많은 사람들과 대화하며 에너지를 얻는다", score: { E: 2 } },
+                    { text: "몇몇 친한 사람들과 깊은 대화를 나눈다", score: { E: 1 } },
+                    { text: "조용히 관찰하며 필요할 때만 대화한다", score: { I: 1 } },
+                    { text: "일찍 집에 가고 싶어한다", score: { I: 2 } }
+                ]
+            },
+            {
+                text: "새로운 프로젝트를 시작할 때 어떤 접근을 선호하나요?",
+                options: [
+                    { text: "구체적인 사실과 데이터를 수집한다", score: { S: 2 } },
+                    { text: "현실적인 계획을 세운다", score: { S: 1 } },
+                    { text: "전체적인 비전과 가능성을 탐색한다", score: { N: 1 } },
+                    { text: "창의적이고 혁신적인 아이디어를 브레인스토밍한다", score: { N: 2 } }
+                ]
+            },
+            {
+                text: "중요한 결정을 내릴 때 무엇을 가장 중요하게 생각하나요?",
+                options: [
+                    { text: "논리적 분석과 객관적 사실", score: { T: 2 } },
+                    { text: "효율성과 실용성", score: { T: 1 } },
+                    { text: "관련된 사람들의 감정과 관계", score: { F: 1 } },
+                    { text: "개인적 가치와 의미", score: { F: 2 } }
+                ]
+            },
+            {
+                text: "일상생활에서 어떤 스타일을 선호하나요?",
+                options: [
+                    { text: "미리 계획을 세우고 체계적으로 진행", score: { J: 2 } },
+                    { text: "기본적인 계획은 세우지만 유연하게 조정", score: { J: 1 } },
+                    { text: "상황에 따라 즉흥적으로 대응", score: { P: 1 } },
+                    { text: "완전히 자유롭고 무계획적으로 생활", score: { P: 2 } }
+                ]
+            },
+            {
+                text: "스트레스를 받을 때 어떻게 대처하나요?",
+                options: [
+                    { text: "다른 사람들과 이야기하며 해결책을 찾는다", score: { E: 2 } },
+                    { text: "믿을 만한 사람과 상의한다", score: { E: 1 } },
+                    { text: "혼자만의 시간을 가지며 생각한다", score: { I: 1 } },
+                    { text: "완전히 혼자가 되어 재충전한다", score: { I: 2 } }
+                ]
+            },
+            {
+                text: "학습할 때 어떤 방식을 선호하나요?",
+                options: [
+                    { text: "단계별로 차근차근 배운다", score: { S: 2 } },
+                    { text: "실제 예시와 경험을 통해 배운다", score: { S: 1 } },
+                    { text: "전체적인 개념을 먼저 이해한다", score: { N: 1 } },
+                    { text: "창의적이고 독창적인 방법을 찾는다", score: { N: 2 } }
+                ]
+            },
+            {
+                text: "갈등 상황에서 어떻게 행동하나요?",
+                options: [
+                    { text: "논리와 사실에 기반해 문제를 해결한다", score: { T: 2 } },
+                    { text: "공정하고 객관적인 기준을 적용한다", score: { T: 1 } },
+                    { text: "모든 사람의 감정을 고려한다", score: { F: 1 } },
+                    { text: "화합과 조화를 최우선으로 한다", score: { F: 2 } }
+                ]
+            },
+            {
+                text: "여행 계획을 세울 때:",
+                options: [
+                    { text: "자세한 일정과 예약을 미리 완료한다", score: { J: 2 } },
+                    { text: "주요 일정은 정하고 세부사항은 나중에", score: { J: 1 } },
+                    { text: "기본적인 것만 정하고 현지에서 결정", score: { P: 1 } },
+                    { text: "계획 없이 자유롭게 여행한다", score: { P: 2 } }
+                ]
+            },
+            {
+                text: "새로운 사람을 만날 때:",
+                options: [
+                    { text: "먼저 다가가서 대화를 시작한다", score: { E: 2 } },
+                    { text: "상황에 따라 적극적으로 다가간다", score: { E: 1 } },
+                    { text: "상대방이 먼저 다가오기를 기다린다", score: { I: 1 } },
+                    { text: "가능한 한 접촉을 피한다", score: { I: 2 } }
+                ]
+            },
+            {
+                text: "문제를 해결할 때:",
+                options: [
+                    { text: "검증된 방법과 경험을 활용한다", score: { S: 2 } },
+                    { text: "실용적이고 현실적인 접근을 한다", score: { S: 1 } },
+                    { text: "새로운 관점과 아이디어를 시도한다", score: { N: 1 } },
+                    { text: "완전히 혁신적인 방법을 찾는다", score: { N: 2 } }
+                ]
+            },
+            {
+                text: "비판을 받을 때:",
+                options: [
+                    { text: "객관적으로 분석하고 개선방안을 찾는다", score: { T: 2 } },
+                    { text: "논리적으로 대응한다", score: { T: 1 } },
+                    { text: "상처받지만 관계를 고려한다", score: { F: 1 } },
+                    { text: "매우 예민하게 반응한다", score: { F: 2 } }
+                ]
+            },
+            {
+                text: "데드라인이 있는 일을 할 때:",
+                options: [
+                    { text: "미리미리 완료하여 여유를 둔다", score: { J: 2 } },
+                    { text: "계획적으로 진행한다", score: { J: 1 } },
+                    { text: "마지막에 집중해서 완성한다", score: { P: 1 } },
+                    { text: "압박감이 있어야 더 잘한다", score: { P: 2 } }
+                ]
+            },
+            {
+                text: "쇼핑할 때:",
+                options: [
+                    { text: "미리 목록을 만들고 계획적으로 구매", score: { J: 2 } },
+                    { text: "필요한 것들을 생각해두고 구매", score: { J: 1 } },
+                    { text: "둘러보다가 마음에 드는 것 구매", score: { P: 1 } },
+                    { text: "충동적으로 구매하는 편", score: { P: 2 } }
+                ]
+            },
+            {
+                text: "팀 프로젝트에서:",
+                options: [
+                    { text: "적극적으로 의견을 제시하고 토론한다", score: { E: 2 } },
+                    { text: "필요할 때 의견을 말한다", score: { E: 1 } },
+                    { text: "주로 듣고 관찰한다", score: { I: 1 } },
+                    { text: "혼자 하는 일을 선호한다", score: { I: 2 } }
+                ]
+            },
+            {
+                text: "새로운 취미를 시작할 때:",
+                options: [
+                    { text: "기초부터 체계적으로 배운다", score: { S: 2 } },
+                    { text: "실용적인 것부터 시작한다", score: { S: 1 } },
+                    { text: "창의적인 방법을 시도한다", score: { N: 1 } },
+                    { text: "완전히 새로운 접근을 시도한다", score: { N: 2 } }
+                ]
+            },
+            {
+                text: "인생에서 가장 중요한 것은:",
+                options: [
+                    { text: "성취와 목표 달성", score: { T: 2 } },
+                    { text: "효율성과 생산성", score: { T: 1 } },
+                    { text: "관계와 사랑", score: { F: 1 } },
+                    { text: "개인적 성장과 의미", score: { F: 2 } }
+                ]
+            }
+        ];
+
+        // MBTI 타입 정보
+        const mbtiTypes = {
+            'ENTJ': { name: '통솔자', desc: '대담하고 상상력이 풍부한 강력한 의지의 소유자입니다.' },
+            'ENTP': { name: '변론가', desc: '똑똑하고 호기심이 많은 사상가입니다.' },
+            'ENFJ': { name: '선도자', desc: '카리스마 있고 영감을 주는 지도자입니다.' },
+            'ENFP': { name: '활동가', desc: '열정적이고 창의적인 자유로운 영혼입니다.' },
+            'ESTJ': { name: '경영자', desc: '뛰어난 관리자이자 체계적인 실행자입니다.' },
+            'ESTP': { name: '사업가', desc: '똑똑하고 에너지 넘치는 현실주의자입니다.' },
+            'ESFJ': { name: '집정관', desc: '따뜻하고 배려심 많은 협력자입니다.' },
+            'ESFP': { name: '연예인', desc: '자발적이고 열정적인 즐거움 추구자입니다.' },
+            'INTJ': { name: '건축가', desc: '상상력이 풍부하고 전략적인 사고를 하는 완벽주의자입니다.' },
+            'INTP': { name: '논리술사', desc: '혁신적이고 독창적인 이론가입니다.' },
+            'INFJ': { name: '옹호자', desc: '선의와 원칙을 가진 이상주의자입니다.' },
+            'INFP': { name: '중재자', desc: '시적이고 친절한 이타주의자입니다.' },
+            'ISTJ': { name: '현실주의자', desc: '실용적이고 사실에 기반한 신뢰할 수 있는 사람입니다.' },
+            'ISTP': { name: '만능재주꾼', desc: '대담하고 실용적인 실험가입니다.' },
+            'ISFJ': { name: '수호자', desc: '따뜻하고 헌신적인 보호자입니다.' },
+            'ISFP': { name: '모험가', desc: '유연하고 매력적인 예술가입니다.' }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+        let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+        // 페이지 초기화
+        function initializePage() {
+            console.log('페이지 초기화 시작');
+            showQuestion(0);
+            updateAnswerStatus();
+        }
+
+        // 질문 표시
+        function showQuestion(index) {
+            if (index >= questions.length) return;
+            
+            const question = questions[index];
+            document.getElementById('questionText').textContent = `${index + 1}. ${question.text}`;
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            
+            question.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option.text;
+                optionDiv.onclick = () => selectOption(i);
+                
+                // 이전 선택 복원
+                if (answers[currentQuestion] === i) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                container.appendChild(optionDiv);
+            });
+            
+            updateProgress();
+            updateButtons();
+            updateAnswerStatus();
+        }
+
+        // 옵션 선택
+        function selectOption(optionIndex) {
+            // 이전 선택 제거
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            
+            // 새 선택 표시
+            document.querySelectorAll('.option')[optionIndex].classList.add('selected');
+            
+            // 답변 저장
+            answers[currentQuestion] = optionIndex;
+            
+            // 점수 업데이트
+            updateScores();
+            updateButtons();
+            updateAnswerStatus();
+            
+            console.log(`질문 ${currentQuestion + 1} 답변: ${optionIndex + 1}`);
+        }
+
+        // 점수 업데이트
+        function updateScores() {
+            // 점수 초기화
+            scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            
+            // 모든 답변의 점수 합산
+            answers.forEach((answer, questionIndex) => {
+                if (answer !== undefined) {
+                    const question = questions[questionIndex];
+                    const selectedOption = question.options[answer];
+                    Object.entries(selectedOption.score).forEach(([key, value]) => {
+                        scores[key] += value;
+                    });
+                }
+            });
+            
+            console.log('현재 점수:', scores);
+        }
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `문항 ${currentQuestion + 1} / ${questions.length}`;
+        }
+
+        // 버튼 상태 업데이트
+        function updateButtons() {
+            const hasAnswer = answers[currentQuestion] !== undefined;
+            const isFirst = currentQuestion === 0;
+            const isLast = currentQuestion === questions.length - 1;
+            
+            document.getElementById('prevBtn').disabled = isFirst;
+            document.getElementById('nextBtn').disabled = !hasAnswer || isLast;
+            document.getElementById('nextBtn').style.display = isLast ? 'none' : 'block';
+            document.getElementById('finishBtn').style.display = (isLast && hasAnswer) ? 'block' : 'none';
+        }
+
+        // 답변 현황 업데이트
+        function updateAnswerStatus() {
+            const container = document.getElementById('answerStatus');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < questions.length; i++) {
+                const item = document.createElement('div');
+                item.className = 'answer-item';
+                item.textContent = i + 1;
+                
+                if (answers[i] !== undefined) {
+                    item.classList.add('answered');
+                }
+                
+                container.appendChild(item);
+            }
+        }
+
+        // 다음 질문
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // 이전 질문
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // 테스트 완료
+        function finishTest() {
+            // 모든 답변이 있는지 확인
+            if (answers.length !== questions.length || answers.some(a => a === undefined)) {
+                alert('모든 질문에 답변해주세요.');
+                return;
+            }
+            
+            // 최종 점수 계산
+            updateScores();
+            
+            // MBTI 타입 결정
+            const type = [
+                scores.E >= scores.I ? 'E' : 'I',
+                scores.S >= scores.N ? 'S' : 'N',
+                scores.T >= scores.F ? 'T' : 'F',
+                scores.J >= scores.P ? 'J' : 'P'
+            ].join('');
+            
+            const typeInfo = mbtiTypes[type];
+            
+            // 결과 표시
+            document.getElementById('resultType').textContent = type;
+            document.getElementById('resultName').textContent = typeInfo.name;
+            document.getElementById('resultDesc').textContent = typeInfo.desc;
+            
+            // 화면 전환
+            document.getElementById('test-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+            
+            // 결과 저장
+            localStorage.setItem('mbti_result', JSON.stringify({
+                type: type,
+                name: typeInfo.name,
+                description: typeInfo.desc,
+                scores: scores,
+                answers: answers,
+                timestamp: new Date().toISOString()
+            }));
+            
+            console.log('테스트 완료! 결과:', type);
+        }
+
+        // 다시 테스트
+        function restartTest() {
+            currentQuestion = 0;
+            answers = [];
+            scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            
+            document.getElementById('test-section').style.display = 'block';
+            document.getElementById('result-section').style.display = 'none';
+            
+            showQuestion(0);
+        }
+
+        // 메인으로 이동
+        function goToMain() {
+            window.location.href = 'index.html';
+        }
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            initializePage();
+        };
+    </script>
+</body>
+</html>

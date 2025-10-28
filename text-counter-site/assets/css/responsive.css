@@ -1,0 +1,448 @@
+/* Responsive Design */
+
+/* Tablet and Mobile Navigation */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: var(--white);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: var(--shadow-lg);
+        z-index: 999;
+        padding: 20px 0;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-item {
+        margin: 0;
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 15px;
+        margin: 0;
+        border-radius: 0;
+        justify-content: center;
+    }
+
+    /* Mobile Dropdown */
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        background: var(--gray-50);
+        margin: 0;
+        border-radius: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .dropdown.active .dropdown-menu {
+        max-height: 300px;
+    }
+
+    .dropdown-menu li a {
+        margin: 0;
+        border-radius: 0;
+        padding: 12px 30px;
+    }
+
+    /* Mobile menu toggle animation */
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+}
+
+/* Hero Section Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 60px 0 40px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-title i {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+}
+
+/* Counter Section Responsive */
+@media (max-width: 1024px) {
+    .counter-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .stats-section {
+        position: static;
+        order: -1;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .counter-section {
+        padding: 40px 0;
+    }
+
+    .input-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .input-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .text-input {
+        min-height: 300px;
+        padding: 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .nav-container {
+        padding: 0 15px;
+        height: 60px;
+    }
+
+    .main-content {
+        margin-top: 60px;
+    }
+
+    .nav-menu {
+        top: 60px;
+    }
+
+    .hero {
+        padding: 40px 0 30px;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-title i {
+        font-size: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-description {
+        font-size: 0.9rem;
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .stat-icon {
+        margin: 0 auto;
+    }
+}
+
+/* Features Section Responsive */
+@media (max-width: 768px) {
+    .features {
+        padding: 60px 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 30px 20px;
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Usage Guide Responsive */
+@media (max-width: 768px) {
+    .usage-guide {
+        padding: 60px 0;
+    }
+
+    .guide-steps {
+        gap: 30px;
+    }
+
+    .step {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        margin: 0 auto;
+    }
+
+    .step-content h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Footer Responsive */
+@media (max-width: 768px) {
+    .footer {
+        padding: 40px 0 20px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+}
+
+/* Additional Mobile Optimizations */
+@media (max-width: 480px) {
+    .btn-clear,
+    .btn-sample {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .detailed-stats {
+        padding-top: 15px;
+    }
+
+    .detail-item {
+        padding: 6px 0;
+        font-size: 0.9rem;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+    }
+
+    .detail-value {
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+    .hero {
+        padding: 30px 0 20px;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .counter-section {
+        padding: 30px 0;
+    }
+
+    .features {
+        padding: 40px 0;
+    }
+
+    .usage-guide {
+        padding: 40px 0;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .stat-icon,
+    .feature-icon,
+    .step-number {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .nav-toggle,
+    .footer,
+    .btn-clear,
+    .btn-sample {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-top: 0;
+    }
+
+    .hero {
+        background: none !important;
+        color: var(--gray-800) !important;
+        padding: 20px 0;
+    }
+
+    .counter-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .text-input {
+        border: 1px solid var(--gray-300);
+        background: var(--white) !important;
+    }
+
+    .stat-card,
+    .feature-card {
+        box-shadow: none !important;
+        border: 1px solid var(--gray-300);
+    }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --light-color: #1e293b;
+        --white: #334155;
+        --gray-50: #475569;
+        --gray-100: #64748b;
+        --gray-200: #94a3b8;
+        --gray-800: #f1f5f9;
+        --gray-700: #e2e8f0;
+        --gray-600: #cbd5e1;
+    }
+
+    body {
+        background-color: var(--light-color);
+        color: var(--gray-800);
+    }
+
+    .navbar {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .text-input {
+        background: var(--white);
+        color: var(--gray-800);
+    }
+
+    .text-input::placeholder {
+        color: var(--gray-600);
+    }
+}
+
+/* Focus Styles for Accessibility */
+.nav-link:focus,
+.btn-clear:focus,
+.btn-sample:focus,
+.text-input:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Hover Effects for Touch Devices */
+@media (hover: none) {
+    .feature-card:hover,
+    .stat-card:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+    }
+
+    .nav-link:hover {
+        background-color: transparent;
+    }
+}
